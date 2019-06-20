@@ -1,12 +1,7 @@
 <template>
   <div class="setting">
-    <div class="setting-port">
-      <div class="input-name">端口号：</div>
-      <a-input class="input-box" defaultValue="4096"/>
-    </div>
-    <div class="setting-secret">
-      <div class="input-name">secret：</div>
-      <a-input class="input-box" placeholder="请输入矿工secret"/>
+    <div class="setting-content">
+      <SettingContent :isRequred="false"/>
     </div>
     <div class="setting-button">
       <a-button type="primary">保存</a-button>
@@ -16,9 +11,11 @@
 </template>
 
 <script>
+import SettingContent from "../components/SettingContent";
+
 export default {
   name: "setting",
-  components: {},
+  components: {SettingContent},
   data() {
     return {};
   },
@@ -30,32 +27,14 @@ export default {
 .setting {
   height: 100%;
 
-  .setting-port {
-    padding: 50px 50px 20px 50px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .setting-secret {
-    padding: 20px 50px;
-    display: flex;
-    justify-content: space-between;
+  .setting-content {
+    padding-top: 20px;
   }
 
   .setting-button {
-    padding: 20px 50px;
+    padding: 20px;
     display: flex;
     justify-content: space-around;
   }
-
-  .input-name {
-    width: 80px;
-    height: 32px;
-    line-height: 32px;
-  }
-
-  // .input-box {
-
-  // }
 }
 </style>

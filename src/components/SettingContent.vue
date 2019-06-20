@@ -1,40 +1,36 @@
 <template>
-  <div class="step3">
-    <SettingContent :isRequred="true"/>
-    <!-- <a-form :form="form" @submit="handleSubmit">
+  <div class="setting-content">
+    <a-form :form="form" @submit="handleSubmit">
       <a-form-item
         label="端口号"
         :labelCol="{lg: {span: 7}, sm: {span: 4}}"
         :wrapperCol="{lg: {span: 10}, sm: {span: 18} }"
+        :required="isRequred"
       >
-        <a-input placeholder="请输入端口号!" v-decorator="[
-          'port',
-          {rules: [{ required: true, message: '请输入端口号!' }]}
-        ]"/>
+        <a-input placeholder="请输入端口号!" v-model="valuePort"/>
       </a-form-item>
       <a-form-item
         label="Secret"
         :labelCol="{lg: {span: 7}, sm: {span: 4}}"
         :wrapperCol="{lg: {span: 10}, sm: {span: 18} }"
+        :required="isRequred"
       >
-        <a-textarea :rows="4" placeholder="请输入Secret!" v-decorator="[
-          'secret',
-          {rules: [{ required: true, message: '请输入Secret!' }]}
-        ]"/>
+        <a-textarea :rows="4" placeholder="请输入Secret!" v-model="valuePort"/>
       </a-form-item>
-    </a-form> -->
+    </a-form>
   </div>
 </template>
 
 <script>
-import SettingContent from "../components/SettingContent";
-
 export default {
-  name: "step3",
-  components: {SettingContent},
+  name: "step4",
+  components: {},
+  props:["isRequred"],
   data() {
     return {
-       form: this.$form.createForm(this),
+      form: this.$form.createForm(this),
+      valuePort:"",
+      valueSecret:""
     };
   },
   methods: {

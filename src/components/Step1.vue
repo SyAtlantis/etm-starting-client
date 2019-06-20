@@ -3,35 +3,38 @@
     <a-form :form="form" @submit="handleSubmit">
       <a-form-item
         label="Nodejs"
-        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+        :labelCol="{lg: {span: 7}, sm: {span: 4}}"
+        :wrapperCol="{lg: {span: 10}, sm: {span: 18} }"
       >
         <div v-if="deploy['nodejs'].isInstalled" class="step1-form-deploy">
           <a-tag color="#87d068">已安装</a-tag>
           <div>版本：{{deploy['nodejs'].version}}</div>
         </div>
         <div v-else>
-          <a-input v-decorator="[ 'nodejs', {rules: [{ required: true }]} ]"/>
+          <a-input-search v-decorator="[ 'nodejs', {rules: [{ required: true }]} ]" >
+              <a-button slot="enterButton" icon="folder-open" directory>选择</a-button>
+          </a-input-search>
         </div>
       </a-form-item>
       <a-form-item
         label="Git"
-        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
-        :required="false"
+        :labelCol="{lg: {span: 7}, sm: {span: 4}}"
+        :wrapperCol="{lg: {span: 10}, sm: {span: 18} }"
       >
         <div v-if="deploy['git'].isInstalled" class="step1-form-deploy">
           <a-tag color="#87d068">已安装</a-tag>
           <div>版本：{{deploy['git'].version}}</div>
         </div>
         <div v-else>
-          <a-input v-decorator="[ 'git', {rules: [{ required: true }]} ]"/>
+          <a-input-search v-decorator="[ 'git', {rules: [{ required: true }]} ]" >
+              <a-button slot="enterButton" icon="folder-open" directory>选择</a-button>
+          </a-input-search>
         </div>
       </a-form-item>
       <a-form-item
         label="PM2"
-        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+        :labelCol="{lg: {span: 7}, sm: {span: 4}}"
+        :wrapperCol="{lg: {span: 10}, sm: {span: 18} }"
         :required="false"
       >
         <div v-if="deploy['pm2'].isInstalled" class="step1-form-deploy">
@@ -58,19 +61,20 @@ export default {
       form: this.$form.createForm(this),
       deploy: {
         nodejs: {
-          isInstalled: true,
+          isInstalled: false,
           version: "1.0.1"
         },
         git: {
-          isInstalled: true,
+          isInstalled: false,
           version: "1.0.1"
         },
         pm2: {
-          isInstalled: true,
+          isInstalled: false,
           version: "1.0.1"
         }
       },
-      pm2value: 1
+      pm2value: 1,
+      nodejsPath:""
     };
   },
   methods: {
@@ -81,6 +85,12 @@ export default {
           console.log("Received values of form: ", values);
         }
       });
+    },
+    onchange(v){
+      console.log(v)
+    },
+    preview(file){
+      console.log(file)
     }
   }
 };
@@ -89,6 +99,7 @@ export default {
 <style lang="less">
 .step1-form-deploy {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>

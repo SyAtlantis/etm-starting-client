@@ -21,10 +21,11 @@
       </a-menu>
     </div>
     <div class="home-body">
-      <Setup v-if="selectedKey==='setup'"/>
-      <Monitor v-else-if="selectedKey==='monitor'"/>
-      <Control v-else-if="selectedKey==='control'"/>
-      <Setting v-else-if="selectedKey==='setting'"/>
+      <!-- <a-card class="home-body-card" v-show="selectedKey==='setup'" title="Card Title"><Setup/></a-card> -->
+      <Setup v-show="selectedKey==='setup'"/>
+      <Monitor v-show="selectedKey==='monitor'"/>
+      <Control v-show="selectedKey==='control'"/>
+      <Setting v-show="selectedKey==='setting'"/>
     </div>
   </div>
 </template>
@@ -68,6 +69,10 @@ export default {
     width: calc(~"100% - @{menusize} ");
     height: 100%;
     padding: 24px;
+
+    .home-body-card{
+      height: 100%;
+    }
   }
 }
 </style>

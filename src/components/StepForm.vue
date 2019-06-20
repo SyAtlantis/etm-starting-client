@@ -83,7 +83,7 @@ export default {
     border: 1px dashed #e9e9e9;
     border-radius: 6px;
     background-color: #fafafa;
-    text-align: center;
+    // text-align: center;
     padding: 20px;
   }
 
