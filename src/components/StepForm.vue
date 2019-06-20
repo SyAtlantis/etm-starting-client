@@ -1,51 +1,56 @@
 <template>
   <div class="steps">
     <a-steps class="steps-title" :current="current">
-      <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
+      <a-step v-for="item in steps" :key="item.key" :title="item.title"/>
     </a-steps>
-    <div class="steps-content">{{steps[current].content}}</div>
+    <div class="steps-content">
+      <!-- {{steps[current].content}} -->
+      <Step1 v-show="current == 0"/>
+      <Step2 v-show="current == 1"/>
+      <Step3 v-show="current == 2"/>
+      <Step4 v-show="current == 3"/>
+    </div>
     <div class="steps-action">
-      <a-button class="action-cancle" v-if="current == 0" type="primary" @click="cancle">取消</a-button>
-      <a-button class="action-prev" v-if="current > 0" type="primary" @click="prev">上一步</a-button>
-      <a-button
-        class="action-next"
-        v-if="current < steps.length - 1"
-        type="primary"
-        @click="next"
-      >下一步</a-button>
-      <a-button
-        class="action-finish"
-        v-if="current == steps.length - 1"
-        type="primary"
-        @click="finish"
-      >完成</a-button>
+      <a-button class="action l" v-if="current == 0" @click="cancle">取消</a-button>
+      <a-button class="action l" v-if="current > 0" @click="prev">上一步</a-button>
+      <a-button class="action r" v-if="current < steps.length-1" @click="next">下一步</a-button>
+      <a-button class="action r" v-if="current == steps.length-1" @click="finish">完成</a-button>
     </div>
   </div>
 </template>
 
 <script>
+import Step1 from "./Step1";
+import Step2 from "./Step2";
+import Step3 from "./Step3";
+import Step4 from "./Step4";
+
 export default {
   name: "stepform",
-  components: {},
+  components: { Step1, Step2, Step3, Step4 },
   data() {
     return {
       current: 0,
       steps: [
         {
+          key: 1,
           title: "配置环境",
-          content: "First-content"
+          content: () => import("./Step1")
         },
         {
+          key: 2,
           title: "安装程序",
-          content: "Second-content"
+          content: <Step1 />
         },
         {
+          key: 3,
           title: "初始设置",
-          content: "Third-content"
+          content: "cccc"
         },
         {
+          key: 4,
           title: "安装完成",
-          content: "Last-content"
+          content: "ddd"
         }
       ]
     };
@@ -86,21 +91,15 @@ export default {
     height: 60px;
     padding-top: 24px;
 
-    .action-cancle {
+    .action {
+      width: 80px;
+    }
+
+    .l {
       float: left;
-      width: 80px;
     }
-    .action-prev {
-      float: left;
-      width: 80px;
-    }
-    .action-next {
+    .r {
       float: right;
-      width: 80px;
-    }
-    .action-finish {
-      float: right;
-      width: 80px;
     }
   }
 }
