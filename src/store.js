@@ -5,47 +5,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    setting: {
-      isMobile: false,
-      theme: "dark",
-      layout: "side",
-      multipage: true,
-      systemName: "En-Tan-Mo Tools"
-    },
-    account: {
-      user: {
-        avatar: "@/assets/logo-sm.png"
-      }
-    },
-    api: {
-      accounts: {},
-      transactions: {},
-      blocks: {},
-      delegates: {},
-      peers: {},
-      loader: {},
-      signatures: {},
-      multisignatures: {},
-      lockvote: {},
-      returnMsg: ""
-    },
-    signed: {}
+    install: {
+      step: 0,
+      nextDisabled: true,
+      prevDisabled: false,
+    }
+
   },
   mutations: {
-    setDevice(state, isMobile) {
-      state.setting.isMobile = isMobile;
-    },
-    setTheme(state, theme) {
-      state.setting.theme = theme;
-    },
-    setLayout(state, layout) {
-      state.setting.layout = layout;
-    },
-    setMultipage(state, multipage) {
-      state.setting.multipage = multipage;
-    },
-    setuser(state, user) {
-      state.account.user = user;
+    setStep(state, num) {
+      state.install.step = num;
     }
   },
   actions: {}

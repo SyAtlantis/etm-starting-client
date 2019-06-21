@@ -11,10 +11,15 @@
       <Step4 v-show="current == 3"/>
     </div>
     <div class="steps-action">
-      <a-button class="action l" v-if="current == 0" @click="cancle">取消</a-button>
-      <a-button class="action l" v-if="current > 0" @click="prev">上一步</a-button>
-      <a-button class="action r" v-if="current < steps.length-1" @click="next">下一步</a-button>
-      <a-button class="action r" v-if="current == steps.length-1" @click="finish">完成</a-button>
+      <a-button class="action left" v-if="current == 0" @click="cancle">取消</a-button>
+      <a-button class="action left" v-if="current > 0" @click="prev" :disabled="prevDisabled">上一步</a-button>
+      <a-button
+        class="action right"
+        v-if="current < steps.length-1"
+        @click="next"
+        :disabled="nextDisabled"
+      >下一步</a-button>
+      <a-button class="action right" v-if="current == steps.length-1" @click="finish">完成</a-button>
     </div>
   </div>
 </template>
@@ -55,6 +60,14 @@ export default {
       ]
     };
   },
+  computed: {
+    nextDisabled() {
+      return this.$store.state.install.nextDisabled;
+    },
+    prevDisabled() {
+      return this.$store.state.install.prevDisabled;
+    }
+  },
   methods: {
     next() {
       this.current++;
@@ -62,7 +75,9 @@ export default {
     prev() {
       this.current--;
     },
-    cancle() {},
+    cancle() {
+      this.$store.state.install.step = 0;
+    },
     finish() {}
   }
 };
@@ -95,10 +110,10 @@ export default {
       width: 80px;
     }
 
-    .l {
+    .left {
       float: left;
     }
-    .r {
+    .right {
       float: right;
     }
   }

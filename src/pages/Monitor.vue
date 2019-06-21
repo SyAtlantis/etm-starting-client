@@ -25,7 +25,7 @@ export default {
         {
           title: "网络连接",
           type: "error",
-          avatar: "../assets/logo.png",
+          avatar: "@/assets/net.png",
           actions: [
             {
               name: "公网IP",
@@ -40,7 +40,7 @@ export default {
         {
           title: "显卡状态",
           type: "loading",
-          avatar: "../assets/logo.png",
+          avatar: "../assets/gpu.png",
           actions: [
             {
               name: "型号",
@@ -55,7 +55,7 @@ export default {
         {
           title: "进程状态",
           type: "search",
-          avatar: "../assets/logo.png",
+          avatar: "../assets/proc.png",
           actions: [
             {
               name: "进程目录",
@@ -70,7 +70,7 @@ export default {
         {
           title: "同步情况",
           type: "error",
-          avatar: "../assets/logo.png",
+          avatar: "../assets/sync.png",
           actions: [
             {
               name: "最新高度",
@@ -89,7 +89,7 @@ export default {
         {
           title: "出块情况",
           type: "normal",
-          avatar: "../assets/logo.png",
+          avatar: "../assets/block.png",
           actions: [
             {
               name: "上一个成功出块时间",
@@ -113,19 +113,19 @@ export default {
       status: {
         normal: {
           name: "正常",
-          color: "#87d068"
+          color: "#74bd4f"
         },
         error: {
           name: "错误",
-          color: "#da1b1b"
+          color: "#e56255"
         },
         loading: {
           name: "加载中",
-          color: "#2db7f5"
+          color: "#f7c443"
         },
         search: {
           name: "查询中",
-          color: "#108ee9"
+          color: "#3f91f7"
         }
       },
       busy: false

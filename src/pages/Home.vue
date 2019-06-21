@@ -1,8 +1,11 @@
 <template>
   <div class="home">
     <div class="home-menu">
+      <div class="home-logo">
+        <h1>ETM-Starting</h1>
+      </div>
       <a-menu :defaultSelectedKeys="[selectedKey]" mode="vertical" @select="menuSelect">
-        <a-menu-item key="setup">
+        <a-menu-item key="install">
           <a-icon type="code"/>
           <span>安装</span>
         </a-menu-item>
@@ -22,7 +25,7 @@
     </div>
     <div class="home-body">
       <!-- <a-card class="home-body-card" v-show="selectedKey==='setup'" title="Card Title"><Setup/></a-card> -->
-      <Setup v-show="selectedKey==='setup'"/>
+      <Install v-show="selectedKey==='install'"/>
       <Monitor v-show="selectedKey==='monitor'"/>
       <Control v-show="selectedKey==='control'"/>
       <Setting v-show="selectedKey==='setting'"/>
@@ -31,17 +34,22 @@
 </template>
 
 <script>
-import Setup from "./Setup";
+import Install from "./Install";
 import Monitor from "./Monitor";
 import Control from "./Control";
 import Setting from "./Setting";
 
 export default {
   name: "home",
-  components: { Setup, Monitor, Control, Setting },
+  components: {
+    Install,
+    Monitor,
+    Control,
+    Setting
+  },
   data() {
     return {
-      selectedKey: "setup"
+      selectedKey: "install"
     };
   },
   methods: {
@@ -61,6 +69,11 @@ export default {
   display: flex;
   justify-content: space-between;
 
+  .home-logo {
+    padding-top: 20px;
+    text-align: center;
+  }
+
   .home-menu {
     width: @menusize;
   }
@@ -70,7 +83,7 @@ export default {
     height: 100%;
     padding: 24px;
 
-    .home-body-card{
+    .home-body-card {
       height: 100%;
     }
   }
