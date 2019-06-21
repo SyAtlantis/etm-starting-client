@@ -1,16 +1,16 @@
 <template>
   <div class="steps">
-    <a-steps class="steps-title" :current="current">
+    <a-steps class="steps-title" :current="step-1">
       <a-step v-for="item in steps" :key="item.key" :title="item.title"/>
     </a-steps>
     <div class="steps-content">
       <!-- {{steps[current].content}} -->
-      <Step1 v-show="current == 0"/>
-      <Step2 v-show="current == 1"/>
-      <Step3 v-show="current == 2"/>
-      <Step4 v-show="current == 3"/>
+      <Step1 v-show="step == 1"/>
+      <Step2 v-show="step == 2"/>
+      <Step3 v-show="step == 3"/>
+      <Step4 v-show="step == 4"/>
     </div>
-    <div class="steps-action">
+    <!-- <div class="steps-action">
       <a-button class="action left" v-if="current == 0" @click="cancle">取消</a-button>
       <a-button class="action left" v-if="current > 0" @click="prev" :disabled="prevDisabled">上一步</a-button>
       <a-button
@@ -20,7 +20,7 @@
         :disabled="nextDisabled"
       >下一步</a-button>
       <a-button class="action right" v-if="current == steps.length-1" @click="finish">完成</a-button>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -35,32 +35,30 @@ export default {
   components: { Step1, Step2, Step3, Step4 },
   data() {
     return {
-      current: 0,
       steps: [
         {
           key: 1,
-          title: "配置环境",
-          content: () => import("./Step1")
+          title: "配置环境"
         },
         {
           key: 2,
-          title: "安装程序",
-          content: <Step1 />
+          title: "安装程序"
         },
         {
           key: 3,
-          title: "初始设置",
-          content: "cccc"
+          title: "初始设置"
         },
         {
           key: 4,
-          title: "安装完成",
-          content: "ddd"
+          title: "安装完成"
         }
       ]
     };
   },
   computed: {
+    step() {
+      return this.$store.state.install.step;
+    },
     nextDisabled() {
       return this.$store.state.install.nextDisabled;
     },
@@ -71,9 +69,12 @@ export default {
   methods: {
     next() {
       this.current++;
+      this.$store.state.install.step++;
+      this.$store.state.install.nextDisabled = true;
     },
     prev() {
       this.current--;
+      this.$store.state.install.step--;
     },
     cancle() {
       this.$store.state.install.step = 0;
@@ -94,7 +95,7 @@ export default {
   }
 
   .steps-content {
-    height: calc(~"100% - 130px");
+    height: 480px;
     border: 1px dashed #e9e9e9;
     border-radius: 6px;
     background-color: #fafafa;

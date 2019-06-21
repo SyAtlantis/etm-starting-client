@@ -1,14 +1,8 @@
 <template>
   <div class="install">
     <Loading class="install-content" :loadFunc="getProjecInfo">
-      <a-button
-        v-if="step === 0"
-        class="install-start"
-        type="primary"
-        @click="start"
-        :disabled="isInstalled"
-      >开始安装</a-button>
-      <SetpFrom v-else-if="step === 1"/>
+      <a-button v-if="step === 0" class="install-start" type="primary" @click="start">开始安装</a-button>
+      <SetpFrom v-else-if="step > 0"/>
     </Loading>
   </div>
 </template>
@@ -22,9 +16,7 @@ export default {
   name: "install",
   components: { Loading, SetpFrom },
   data() {
-    return {
-      isInstalled: false
-    };
+    return {};
   },
   computed: {
     step() {
@@ -47,20 +39,11 @@ export default {
   width: 100%;
   height: 100%;
 
-  .install-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    // text-align: center;
-  }
-
   .install-start {
     width: 200px;
     height: 100px;
-    // top: calc(50% - 50px);
-    // left: calc(50% - 100px);
-    align-items: center;
+    top: 200px;
+    left: calc(50% - 100px);
   }
 }
 </style>

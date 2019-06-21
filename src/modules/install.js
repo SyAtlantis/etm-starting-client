@@ -8,10 +8,12 @@ class Install {
     }
 
     await new Promise((resolve, reject) => {
+      void (reject);
       setTimeout(() => {
         res = {
           isInstalled: false,
           path: "bbb",
+          version: "2.2.2"
         };
         resolve(res);
       }, 2000);
@@ -28,6 +30,7 @@ class Install {
     }
 
     await new Promise((resolve, reject) => {
+      void (reject);
       setTimeout(() => {
         res = {
           isInstalled: true,
@@ -49,6 +52,7 @@ class Install {
     }
 
     await new Promise((resolve, reject) => {
+      void (reject);
       setTimeout(() => {
         res = {
           isInstalled: true,
@@ -70,6 +74,7 @@ class Install {
     }
 
     await new Promise((resolve, reject) => {
+      void (reject);
       setTimeout(() => {
         res = {
           isInstalled: false,

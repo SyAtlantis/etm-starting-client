@@ -24,6 +24,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.spinning);
     this.loadFunc()
       .then(data => {
         console.log(data);
@@ -42,32 +43,15 @@ export default {
       type: Function,
       required: true
     }
-    // spinning: Boolean,
-    // isInstalled: Boolean,
-    // version: String
   },
   methods: {}
 };
 </script>
 
 <style lang="less">
-.loading {
-  width: 100%;
-  height: 100%;
-
-  .loading-spin {
-    width: 100%;
-    height: 100%;
-
-    .loading-uninstalled {
-      width: 100%;
-      height: 100%;
-
-      .loading-content {
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
+.loading-installed {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>

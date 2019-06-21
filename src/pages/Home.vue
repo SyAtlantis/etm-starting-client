@@ -2,7 +2,7 @@
   <div class="home">
     <div class="home-menu">
       <div class="home-logo">
-        <h1>ETM-Starting</h1>
+        <h2>ETM-Starting</h2>
       </div>
       <a-menu :defaultSelectedKeys="[selectedKey]" mode="vertical" @select="menuSelect">
         <a-menu-item key="install">
@@ -24,7 +24,6 @@
       </a-menu>
     </div>
     <div class="home-body">
-      <!-- <a-card class="home-body-card" v-show="selectedKey==='setup'" title="Card Title"><Setup/></a-card> -->
       <Install v-show="selectedKey==='install'"/>
       <Monitor v-show="selectedKey==='monitor'"/>
       <Control v-show="selectedKey==='control'"/>
