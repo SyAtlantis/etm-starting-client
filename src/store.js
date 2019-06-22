@@ -7,21 +7,30 @@ export default new Vuex.Store({
   state: {
     install: {
       step: 0,
-      projectInfo: {},
+      projectInfo: {
+        aaa: 1111
+      },
       nodejsInfo: {
         isInstalled: false,
-        version: ""
+        version: "",
+        path: "",
       },
       gitInfo: {
         isInstalled: false,
-        version: ""
+        version: "",
+        path: "",
       },
       pm2Info: {
         isInstalled: false,
-        version: ""
+        version: "",
+        select: 1
       },
       nextDisabled: true,
       prevDisabled: false,
+    },
+    setting: {
+      port: "",
+      secret: ""
     }
 
   },

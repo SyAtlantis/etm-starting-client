@@ -4,7 +4,6 @@
       <a-step v-for="item in steps" :key="item.key" :title="item.title"/>
     </a-steps>
     <div class="steps-content">
-      <!-- {{steps[current].content}} -->
       <Step1 v-show="step == 1"/>
       <Step2 v-show="step == 2"/>
       <Step3 v-show="step == 3"/>
@@ -58,28 +57,28 @@ export default {
   computed: {
     step() {
       return this.$store.state.install.step;
-    },
-    nextDisabled() {
-      return this.$store.state.install.nextDisabled;
-    },
-    prevDisabled() {
-      return this.$store.state.install.prevDisabled;
     }
+    // nextDisabled() {
+    //   return this.$store.state.install.nextDisabled;
+    // },
+    // prevDisabled() {
+    //   return this.$store.state.install.prevDisabled;
+    // }
   },
   methods: {
-    next() {
-      this.current++;
-      this.$store.state.install.step++;
-      this.$store.state.install.nextDisabled = true;
-    },
-    prev() {
-      this.current--;
-      this.$store.state.install.step--;
-    },
-    cancle() {
-      this.$store.state.install.step = 0;
-    },
-    finish() {}
+    // next() {
+    //   this.current++;
+    //   this.$store.state.install.step++;
+    //   this.$store.state.install.nextDisabled = true;
+    // },
+    // prev() {
+    //   this.current--;
+    //   this.$store.state.install.step--;
+    // },
+    // cancle() {
+    //   this.$store.state.install.step = 0;
+    // },
+    // finish() {}
   }
 };
 </script>
@@ -95,28 +94,27 @@ export default {
   }
 
   .steps-content {
-    height: 480px;
+    height: calc(100% - 60px);
     border: 1px dashed #e9e9e9;
     border-radius: 6px;
     background-color: #fafafa;
-    // text-align: center;
     padding: 20px;
   }
 
-  .steps-action {
-    height: 60px;
-    padding-top: 24px;
+  // .steps-action {
+  //   height: 60px;
+  //   padding-top: 24px;
 
-    .action {
-      width: 80px;
-    }
+  //   .action {
+  //     width: 80px;
+  //   }
 
-    .left {
-      float: left;
-    }
-    .right {
-      float: right;
-    }
-  }
+  //   .left {
+  //     float: left;
+  //   }
+  //   .right {
+  //     float: right;
+  //   }
+  // }
 }
 </style>

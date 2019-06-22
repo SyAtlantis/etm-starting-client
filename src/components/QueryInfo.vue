@@ -1,12 +1,12 @@
 <template>
-  <div class="loading">
-    <a-spin class="loading-spin" :spinning="spinning">
-      <div v-if="isInstalled" class="loading-installed">
+  <div class="queryinfo">
+    <a-spin class="queryinfo-spin" :spinning="spinning">
+      <div v-if="isInstalled" class="queryinfo-installed">
         <a-tag color="#87d068">已安装</a-tag>
         <div>版本：{{version}}</div>
       </div>
-      <div v-else class="loading-uninstalled">
-        <slot class="loading-content"/>
+      <div v-else class="queryinfo-uninstalled">
+        <slot class="queryinfo-content"/>
       </div>
     </a-spin>
   </div>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "loading",
+  name: "queryinfo",
   components: {},
   data() {
     return {
@@ -25,13 +25,15 @@ export default {
   },
   mounted() {
     console.log(this.spinning);
-    this.loadFunc()
+    this.func()
       .then(data => {
         console.log(data);
         this.spinning = false;
         if (data) {
           this.isInstalled = data.isInstalled;
           this.version = data.version;
+
+          Object.assign(this.$store.state.install[this.name], data);
         }
       })
       .catch(err => {
@@ -39,9 +41,17 @@ export default {
       });
   },
   props: {
-    loadFunc: {
+    func: {
       type: Function,
       required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    show: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {}
@@ -49,7 +59,7 @@ export default {
 </script>
 
 <style lang="less">
-.loading-installed {
+.queryinfo-installed {
   display: flex;
   justify-content: flex-start;
   align-items: center;

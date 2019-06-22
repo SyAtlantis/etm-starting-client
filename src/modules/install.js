@@ -79,7 +79,8 @@ class Install {
         res = {
           isInstalled: false,
           path: "",
-          version: "1.0.1"
+          version: "1.0.1",
+          select: 1,
         };
         resolve(res);
       }, 2000);

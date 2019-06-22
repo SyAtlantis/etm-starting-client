@@ -1,20 +1,16 @@
 <template>
   <div class="install">
-    <Loading class="install-content" :loadFunc="getProjecInfo">
-      <a-button v-if="step === 0" class="install-start" type="primary" @click="start">开始安装</a-button>
-      <SetpFrom v-else-if="step > 0"/>
-    </Loading>
+    <a-button v-if="step === 0" class="install-start" type="primary" @click="start">开始安装</a-button>
+    <SetpFrom v-else-if="step > 0"/>
   </div>
 </template>
 
 <script>
-import Loading from "../components/Loading";
 import SetpFrom from "../components/StepForm";
-import { install } from "../modules";
 
 export default {
   name: "install",
-  components: { Loading, SetpFrom },
+  components: { SetpFrom },
   data() {
     return {};
   },
@@ -26,24 +22,24 @@ export default {
   methods: {
     start() {
       this.$store.state.install.step = 1;
-    },
-    getProjecInfo() {
-      return install.getProjecInfo();
     }
   }
 };
 </script>
 
 <style lang="less">
+@button-w: 200px;
+@button-h: 100px;
+
 .install {
   width: 100%;
   height: 100%;
 
   .install-start {
-    width: 200px;
-    height: 100px;
+    width: @button-w;
+    height: @button-h;
     top: 200px;
-    left: calc(50% - 100px);
+    left: calc(50% - @button-w / 2);
   }
 }
 </style>

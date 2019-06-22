@@ -1,28 +1,12 @@
 <template>
   <div class="step3">
-    <SettingContent :isRequred="true"/>
-    <!-- <a-form :form="form" @submit="handleSubmit">
-      <a-form-item
-        label="端口号"
-        :labelCol="{lg: {span: 7}, sm: {span: 4}}"
-        :wrapperCol="{lg: {span: 10}, sm: {span: 18} }"
-      >
-        <a-input placeholder="请输入端口号!" v-decorator="[
-          'port',
-          {rules: [{ required: true, message: '请输入端口号!' }]}
-        ]"/>
-      </a-form-item>
-      <a-form-item
-        label="Secret"
-        :labelCol="{lg: {span: 7}, sm: {span: 4}}"
-        :wrapperCol="{lg: {span: 10}, sm: {span: 18} }"
-      >
-        <a-textarea :rows="4" placeholder="请输入Secret!" v-decorator="[
-          'secret',
-          {rules: [{ required: true, message: '请输入Secret!' }]}
-        ]"/>
-      </a-form-item>
-    </a-form> -->
+    <div class="step-content">
+      <SettingContent :isRequred="true"/>
+    </div>
+    <div class="step-footer">
+      <a-button class="footer-btn" type="primary" @click="prev" :disabled="prevDisabled">上一步</a-button>
+      <a-button class="footer-btn" type="primary" @click="next" :disabled="nextDisabled">下一步</a-button>
+    </div>
   </div>
 </template>
 
@@ -31,24 +15,60 @@ import SettingContent from "../components/SettingContent";
 
 export default {
   name: "step3",
-  components: {SettingContent},
+  components: { SettingContent },
   data() {
     return {
-       form: this.$form.createForm(this),
+      form: this.$form.createForm(this),
+      prevDisabled: false
     };
   },
+  computed: {
+    port() {
+      return this.$store.state.setting.port;
+    },
+    secret() {
+      return this.$store.state.setting.secret;
+    },
+    nextDisabled() {
+      if (this.$store.state.install.step !== 3) {
+        return true;
+      }
+      if (!this.port || !this.secret) {
+        return true;
+      }
+
+      return false;
+    }
+  },
   methods: {
-    handleSubmit (e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-        }
-      });
+    prev() {
+      this.$store.state.install.step--;
+    },
+    next() {
+      this.$store.state.install.step++;
     }
   }
 };
 </script>
 
 <style lang="less">
+.step3 {
+  width: 100%;
+  height: 100%;
+
+  .step-content {
+    height: calc(100% - 32px);
+  }
+
+  .step-footer {
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+
+    .footer-btn {
+      width: 80px;
+      height: 32px;
+    }
+  }
+}
 </style>
