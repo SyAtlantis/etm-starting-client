@@ -2,10 +2,7 @@
 class Install {
 
   static async getProjecInfo() {
-    let res = {
-      isInstalled: true,
-      path: "aaa",
-    }
+    let res = {};
 
     await new Promise((resolve, reject) => {
       void (reject);
@@ -23,11 +20,7 @@ class Install {
   }
 
   static async getNodejsInfo() {
-    let res = {
-      isInstalled: true,
-      path: "",
-      version: "1.0.1"
-    }
+    let res = {};
 
     await new Promise((resolve, reject) => {
       void (reject);
@@ -45,11 +38,7 @@ class Install {
   }
 
   static async getGitInfo() {
-    let res = {
-      isInstalled: true,
-      path: "",
-      version: "1.0.1"
-    }
+    let res = {};
 
     await new Promise((resolve, reject) => {
       void (reject);
@@ -67,11 +56,7 @@ class Install {
   }
 
   static async getPm2Info() {
-    let res = {
-      isInstalled: true,
-      path: "",
-      version: "1.0.1"
-    }
+    let res = {};
 
     await new Promise((resolve, reject) => {
       void (reject);

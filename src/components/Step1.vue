@@ -16,7 +16,7 @@
           <QueryInfo :func="getPm2Info" name="pm2Info">
             <a-radio-group :value="pm2Info.select" @change="change">
               <a-radio :value="1">全局安装</a-radio>
-              <a-radio :value="2">项目安装</a-radio>
+              <a-radio :value="2">项目内安装</a-radio>
             </a-radio-group>
           </QueryInfo>
         </a-form-item>
@@ -75,7 +75,7 @@ export default {
       this.$store.state.install.step = 0;
     },
     next() {
-      this.$store.state.install.step++;
+      this.$store.state.install.step = 2;
     },
 
     getNodejsInfo() {

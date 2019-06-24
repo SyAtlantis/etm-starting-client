@@ -31,8 +31,30 @@ export default new Vuex.Store({
     setting: {
       port: "",
       secret: ""
-    }
+    },
+    monitor: {
+      netInfo: {
+        status: "error",
+        publicIp: "",
+        port: ""
+      },
+      gpuInfo: {
+        status: "error",
 
+      },
+      procInfo: {
+        status: "error",
+
+      },
+      syncInfo: {
+        status: "loading",
+
+      },
+      blockInfo: {
+        status: "normal",
+
+      }
+    }
   },
   mutations: {
     setStep(state, num) {

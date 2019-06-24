@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     prev() {
-      this.$store.state.install.step--;
+      this.$store.state.install.step = 3;
     },
     finish() {}
   }

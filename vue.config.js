@@ -10,6 +10,14 @@ module.exports = {
     }
   },
   devServer: {
-    port: 7777
+    port: 7777,
+    // proxy: {
+    //   // 配置多个代理(配置一个 proxy: 'http://localhost:4000' )
+    //   "/api": {
+    //     target: "http://localhost:7788",
+    //     ws: true,
+    //     changeOrigin: true
+    //   }
+    // }
   }
 }

@@ -4,7 +4,7 @@
       <SettingContent :isRequred="true"/>
     </div>
     <div class="step-footer">
-      <a-button class="footer-btn" type="primary" @click="prev" :disabled="prevDisabled">上一步</a-button>
+      <a-button class="footer-btn" type="primary" @click="prev" :disabled="false">上一步</a-button>
       <a-button class="footer-btn" type="primary" @click="next" :disabled="nextDisabled">下一步</a-button>
     </div>
   </div>
@@ -18,8 +18,7 @@ export default {
   components: { SettingContent },
   data() {
     return {
-      form: this.$form.createForm(this),
-      prevDisabled: false
+      form: this.$form.createForm(this)
     };
   },
   computed: {
@@ -42,10 +41,10 @@ export default {
   },
   methods: {
     prev() {
-      this.$store.state.install.step--;
+      this.$store.state.install.step = 2;
     },
     next() {
-      this.$store.state.install.step++;
+      this.$store.state.install.step = 4;
     }
   }
 };
