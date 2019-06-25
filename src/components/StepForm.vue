@@ -9,17 +9,6 @@
       <Step3 v-show="step == 3"/>
       <Step4 v-show="step == 4"/>
     </div>
-    <!-- <div class="steps-action">
-      <a-button class="action left" v-if="current == 0" @click="cancle">取消</a-button>
-      <a-button class="action left" v-if="current > 0" @click="prev" :disabled="prevDisabled">上一步</a-button>
-      <a-button
-        class="action right"
-        v-if="current < steps.length-1"
-        @click="next"
-        :disabled="nextDisabled"
-      >下一步</a-button>
-      <a-button class="action right" v-if="current == steps.length-1" @click="finish">完成</a-button>
-    </div>-->
   </div>
 </template>
 
@@ -58,28 +47,8 @@ export default {
     step() {
       return this.$store.state.install.step;
     }
-    // nextDisabled() {
-    //   return this.$store.state.install.nextDisabled;
-    // },
-    // prevDisabled() {
-    //   return this.$store.state.install.prevDisabled;
-    // }
   },
-  methods: {
-    // next() {
-    //   this.current++;
-    //   this.$store.state.install.step++;
-    //   this.$store.state.install.nextDisabled = true;
-    // },
-    // prev() {
-    //   this.current--;
-    //   this.$store.state.install.step--;
-    // },
-    // cancle() {
-    //   this.$store.state.install.step = 0;
-    // },
-    // finish() {}
-  }
+  methods: {}
 };
 </script>
 
@@ -100,21 +69,5 @@ export default {
     background-color: #fafafa;
     padding: 20px;
   }
-
-  // .steps-action {
-  //   height: 60px;
-  //   padding-top: 24px;
-
-  //   .action {
-  //     width: 80px;
-  //   }
-
-  //   .left {
-  //     float: left;
-  //   }
-  //   .right {
-  //     float: right;
-  //   }
-  // }
 }
 </style>

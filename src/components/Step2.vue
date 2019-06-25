@@ -18,6 +18,7 @@
           <p>Solve initial network problems 3 2015-09-01</p>
         </a-timeline-item>
         <a-timeline-item>
+          <span>EnTanMo:</span>
           <p>Technical testing 1</p>
           <p>Technical testing 2</p>
           <p>Technical testing 3 2015-09-01</p>
@@ -25,7 +26,7 @@
       </a-timeline>
     </div>
     <div class="step-footer">
-      <a-button class="footer-btn" type="primary" @click="prev" :disabled="false">上一步</a-button>
+      <a-button class="footer-btn" type="primary" @click="prev" :disabled="prevDisabled">上一步</a-button>
       <a-button class="footer-btn" type="primary" @click="next" :disabled="nextDisabled">下一步</a-button>
     </div>
   </div>
@@ -59,6 +60,13 @@ export default {
     };
   },
   computed: {
+    prevDisabled() {
+      if (this.$store.state.install.step !== 2) {
+        return true;
+      }
+
+      return false;
+    },
     nextDisabled() {
       if (this.$store.state.install.step !== 2) {
         return true;

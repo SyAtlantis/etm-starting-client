@@ -1,3 +1,6 @@
+import Server from "./server";
+
+let server = new Server();
 
 class Install {
 
@@ -19,81 +22,37 @@ class Install {
     return res;
   }
 
-  static async getNodejsInfo() {
-    let res = {};
-
-    await new Promise((resolve, reject) => {
-      void (reject);
-      setTimeout(() => {
-        res = {
-          isInstalled: true,
-          path: "",
-          version: "1.0.1"
-        };
-        resolve(res);
-      }, 2000);
-    });
-
-    return res;
+  static async getNodejsInfo(data) {
+    return await server.get("/install/getNodejsInfo", data);
   }
 
-  static async getGitInfo() {
-    let res = {};
-
-    await new Promise((resolve, reject) => {
-      void (reject);
-      setTimeout(() => {
-        res = {
-          isInstalled: true,
-          path: "",
-          version: "1.0.1"
-        };
-        resolve(res);
-      }, 2000);
-    });
-
-    return res;
+  static async getGitInfo(data) {
+    return await server.get("/install/getGitInfo", data);
   }
 
-  static async getPm2Info() {
-    let res = {};
-
-    await new Promise((resolve, reject) => {
-      void (reject);
-      setTimeout(() => {
-        res = {
-          isInstalled: false,
-          path: "",
-          version: "1.0.1",
-          select: 1,
-        };
-        resolve(res);
-      }, 2000);
-    });
-
-    return res;
+  static async getPm2Info(data) {
+    return await server.get("/install/getPm2Info", data);
   }
 
-  static async setNodejsPath(path) {
-    void (path);
+  static async setNodejsPath(data) {
+    void (data);
   }
 
-  static async setPm2Path(path) {
-    void (path);
+  static async setPm2Path(data) {
+    void (data);
   }
 
-  static async installNodejs() {
-
+  static async installNodejs(data) {
+    void (data);
   }
 
-  static async installGit() {
-
+  static async installGit(data) {
+    void (data);
   }
 
-  static async installPm2() {
-
+  static async installPm2(data) {
+    void (data);
   }
-
 
 }
 

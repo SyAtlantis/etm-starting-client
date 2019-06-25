@@ -13,10 +13,12 @@
             @click="reload(item.name)"
           />
           <a-avatar slot="avatar" :size="48" shape="square" :src="item.avatar"/>
-          <template slot="description" v-for="({name, value}, index) in item.actions">
+          <span v-if="item.status == 'error'" slot="description">{{item.errInfo}}</span>
+          <template v-else slot="description" v-for="({name, value}, index) in item.actions">
             <span :key="name">{{name}} : {{value}}</span>
             <a-divider :key="index" type="vertical" v-if="index !== item.actions.length-1"/>
           </template>
+          <span slot="description"></span>
         </a-list-item-meta>
         <Tag :type="item.status" slot="extra"/>
       </a-list-item>
@@ -150,12 +152,13 @@ export default {
         {
           title: "网络连接",
           name: "netInfo",
-          status: this.$store.state.monitor.netInfo.status,
           avatar: require("@/assets/net.png"),
+          status: this.$store.state.monitor.netInfo.status,
+          errInfo: this.$store.state.monitor.netInfo.errInfo,
           actions: [
             {
               name: "公网IP",
-              value: "127.0.0.1"
+              value: this.$store.state.monitor.netInfo.data.publicIp
             },
             {
               name: "端口",
@@ -166,8 +169,9 @@ export default {
         {
           title: "显卡状态",
           name: "gpuInfo",
-          status: this.$store.state.monitor.gpuInfo.status,
           avatar: require("@/assets/gpu.png"),
+          status: this.$store.state.monitor.gpuInfo.status,
+          errInfo: this.$store.state.monitor.gpuInfo.errInfo,
           actions: [
             {
               name: "型号",
@@ -182,8 +186,9 @@ export default {
         {
           title: "进程状态",
           name: "procInfo",
-          status: this.$store.state.monitor.procInfo.status,
           avatar: require("@/assets/proc.png"),
+          status: this.$store.state.monitor.procInfo.status,
+          errInfo: this.$store.state.monitor.procInfo.errInfo,
           actions: [
             {
               name: "进程目录",
@@ -198,8 +203,9 @@ export default {
         {
           title: "同步情况",
           name: "syncInfo",
-          status: this.$store.state.monitor.syncInfo.status,
           avatar: require("@/assets/sync.png"),
+          status: this.$store.state.monitor.syncInfo.status,
+          errInfo: this.$store.state.monitor.syncInfo.errInfo,
           actions: [
             {
               name: "最新高度",
@@ -218,8 +224,9 @@ export default {
         {
           title: "出块情况",
           name: "blockInfo",
-          status: this.$store.state.monitor.blockInfo.status,
           avatar: require("@/assets/block.png"),
+          status: this.$store.state.monitor.blockInfo.status,
+          errInfo: this.$store.state.monitor.blockInfo.errInfo,
           actions: [
             {
               name: "上一个成功出块时间",
@@ -243,98 +250,62 @@ export default {
     }
   },
   mounted() {
-    this.getNetInfo();
-    this.getGpuInfo();
-    this.getProcInfo();
-    this.getSyncInfo();
-    this.getBlockInfo();
+    this.getInfo("netInfo");
+    this.getInfo("gpuInfo");
+    this.getInfo("procInfo");
+    this.getInfo("syncInfo");
+    this.getInfo("blockInfo");
   },
   methods: {
     reload(name) {
-      console.log(name);
+      this.getInfo(name);
+    },
+    getInfo(name) {
+      let func;
       switch (name) {
         case this.listData[0].name:
-          this.getNetInfo();
+          func = monitor.getNetInfo;
           break;
         case this.listData[1].name:
-          this.getGpuInfo();
+          func = monitor.getGpuInfo;
           break;
         case this.listData[2].name:
-          this.getProcInfo();
+          func = monitor.getProcInfo;
           break;
         case this.listData[3].name:
-          this.getSyncInfo();
+          func = monitor.getSyncInfo;
           break;
         case this.listData[4].name:
-          this.getBlockInfo();
+          func = monitor.getBlockInfo;
           break;
         default:
           break;
       }
-    },
-    getNetInfo() {
-      this.$store.state.monitor.netInfo.status = "loading";
-      monitor
-        .getNetInfo()
+
+      this.$store.state.monitor[name].status = "loading";
+
+      func()
         .then(res => {
-          this.$store.state.monitor.netInfo.status = "normal";
-          console.log(res, this.$store.state.monitor.netInfo.status);
+          console.log(res.data);
+          let { data } = res;
+          if (!data || res.status !== 200) {
+            throw new Error("Result data or status error!");
+          }
+
+          if (data.success) {
+            if (data.results) {
+              this.$store.state.monitor[name].status = "normal";
+              Object.assign(this.$store.state.monitor[name].data, data.results);
+            } else {
+              throw new Error("Requested data does not match.");
+            }
+          } else {
+            throw new Error(data.message);
+          }
         })
         .catch(err => {
-          console.log(err);
-          this.$store.state.monitor.netInfo.status = "error";
-        });
-    },
-    getGpuInfo() {
-      this.$store.state.monitor.gpuInfo.status = "loading";
-      monitor
-        .getGpuInfo()
-        .then(res => {
-          this.$store.state.monitor.gpuInfo.status = "normal";
-          console.log(res, this.$store.state.monitor.gpuInfo.status);
-        })
-        .catch(err => {
-          console.log(err);
-          this.$store.state.monitor.gpuInfo.status = "error";
-        });
-    },
-    getProcInfo() {
-      this.$store.state.monitor.procInfo.status = "loading";
-      monitor
-        .getProcInfo()
-        .then(res => {
-          this.$store.state.monitor.procInfo.status = "error";
-          console.log(res, this.$store.state.monitor.procInfo.status);
-        })
-        .catch(err => {
-          console.log(err);
-          this.$store.state.monitor.procInfo.status = "error";
-        });
-    },
-    getSyncInfo() {
-      this.$store.state.monitor.syncInfo.status = "loading";
-      monitor
-        .getSyncInfo()
-        .then(res => {
-          this.$store.state.monitor.syncInfo.status = "normal";
-          console.log(res, this.$store.state.monitor.syncInfo.status);
-        })
-        .catch(err => {
-          console.log(err);
-          this.$store.state.monitor.syncInfo.status = "error";
-        });
-    },
-    getBlockInfo() {
-      this.$store.state.monitor.blockInfo.status = "loading";
-      monitor
-        .getBlockInfo()
-        .then(res => {
-          this.$store.state.monitor.blockInfo.status = "error";
-          console.log(res, this.$store.state.monitor.blockInfo.status);
-        })
-        .catch(err => {
-          console.log(err);
-          this.$store.state.monitor.blockInfo.status = "error";
+          this.$store.state.monitor[name].status = "error";
+          this.$store.state.monitor[name].errInfo = `${err}`;
         });
     }
   }

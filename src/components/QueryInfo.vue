@@ -6,6 +6,8 @@
         <div>版本：{{version}}</div>
       </div>
       <div v-else class="queryinfo-uninstalled">
+        <a-tag color="#e56255">未安装</a-tag>
+        <a-button type="primary" ghost size="small">点击安装</a-button>
         <slot class="queryinfo-content"/>
       </div>
     </a-spin>
@@ -24,20 +26,34 @@ export default {
     };
   },
   mounted() {
-    console.log(this.spinning);
     this.func()
-      .then(data => {
-        console.log(data);
-        this.spinning = false;
-        if (data) {
-          this.isInstalled = data.isInstalled;
-          this.version = data.version;
+      .then(res => {
+        let { data } = res;
+        if (!data || res.status !== 200) {
+          throw new Error("Result data or status error!");
+        }
 
-          Object.assign(this.$store.state.install[this.name], data);
+        if (data.success) {
+          if (data.results) {
+            this.spinning = false;
+            this.isInstalled = true;
+            this.version = data.results;
+
+            this.$store.state.install[this.name].isInstalled = true;
+            Object.assign(this.$store.state.install[this.name], data.results);
+          } else {
+            throw new Error("Requested data does not match.");
+          }
+        } else {
+          throw new Error(data.message);
         }
       })
       .catch(err => {
-        console.log(err);
+        this.spinning = false;
+        this.isInstalled = false;
+        this.$store.state.install[this.name].isInstalled = false;
+
+        console.log(`queryinfo ${this.name} error=>${err}`);
       });
   },
   props: {
@@ -59,7 +75,7 @@ export default {
 </script>
 
 <style lang="less">
-.queryinfo-installed {
+.queryinfo-spin {
   display: flex;
   justify-content: flex-start;
   align-items: center;

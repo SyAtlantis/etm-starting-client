@@ -9,55 +9,19 @@ class Monitor {
   }
 
   static async getGpuInfo(data) {
-    let res;
-    await new Promise((resolve, reject) => {
-      void (reject);
-      setTimeout(() => {
-        res = server.get("/monitor/getGpuInfo", data);
-        resolve(res);
-      }, 2000);
-    });
-
-    return res;
+    return await server.get("/monitor/getGpuInfo", data);
   }
 
   static async getProcInfo(data) {
-    let res;
-    await new Promise((resolve, reject) => {
-      void (reject);
-      setTimeout(() => {
-        res = server.get("/monitor/getProcInfo", data);
-        resolve(res);
-      }, 2000);
-    });
-
-    return res;
+    return await server.get("/monitor/getProcInfo", data);
   }
 
   static async getSyncInfo(data) {
-    let res;
-    await new Promise((resolve, reject) => {
-      void (reject);
-      setTimeout(() => {
-        res = server.get("/monitor/getSyncInfo", data);
-        resolve(res);
-      }, 2000);
-    });
-
-    return res;
+    return await server.get("/monitor/getSyncInfo", data);
   }
 
   static async getBlockInfo(data) {
-    let res;
-    await new Promise((resolve, reject) => {
-      void (reject);
-      setTimeout(() => {
-        res = server.get("/monitor/getBlockInfo", data);
-        resolve(res);
-      }, 2000);
-    });
-
-    return res;
+    return await server.get("/monitor/getBlockInfo", data);
   }
 }
 
