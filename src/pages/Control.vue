@@ -1,37 +1,41 @@
 <template>
   <div class="control">
     <!-- <a-card title="环境状态" class="control-env"> -->
-    <div class="control-env">
-      <div class="env-title">
-        <strong>运行环境状态 :</strong>
-      </div>
-      <!-- <a-divider dashed/> -->
-      <a-form v-for="item in formList" :key="item.name">
-        <a-form-item
-          v-if="item.name !='setting'"
-          class="env-item"
-          :key="item.name"
-          :label="item.label"
-          :labelCol="{span: 4}"
-          :wrapperCol="{span: 18}"
-          :required="item.required"
-        >
-          <QueryInfo :func1="item.func1" :func2="item.func2" :name="item.name"></QueryInfo>
-        </a-form-item>
-        <a-form-item v-else label="参数设置" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
-          <div v-if="isSetted">
-            <a-tag class="evn-setting" color="#87d068">已设置</a-tag>
-            <span>可进入设置页面修改！</span>
-          </div>
-          <div v-else>
-            <a-tag class="evn-setting" color="#e56255">未设置</a-tag>
-            <span>请先进入设置页面设置！</span>
-          </div>
-        </a-form-item>
-      </a-form>
+    <!-- <div class="control-env"> -->
+    <div class="env-title">
+      <strong>运行环境 :</strong>
     </div>
+    <!-- <a-divider dashed/> -->
+    <a-form v-for="item in formList" :key="item.name">
+      <a-form-item
+        v-if="item.name !='setting'"
+        class="env-item"
+        :key="item.name"
+        :label="item.label"
+        :labelCol="{span: 4}"
+        :wrapperCol="{span: 18}"
+        :required="item.required"
+      >
+        <QueryInfo :func1="item.func1" :func2="item.func2" :name="item.name"></QueryInfo>
+      </a-form-item>
+      <a-form-item v-else label="参数设置" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
+        <div v-if="isSetted">
+          <a-tag class="evn-setting" color="#87d068">已设置</a-tag>
+          <span>可进入设置页面修改！</span>
+        </div>
+        <div v-else>
+          <a-tag class="evn-setting" color="#e56255">未设置</a-tag>
+          <span>请先进入设置页面设置！</span>
+        </div>
+      </a-form-item>
+    </a-form>
+    <!-- </div> -->
     <!-- </a-card> -->
-
+    <a-divider dashed/>
+    <div class="env-title">
+      <strong>运行状态 :</strong>
+      <Tag2 type="normal"/>
+    </div>
     <a-button-group class="control-btn">
       <a-button
         class="btn"
@@ -56,11 +60,12 @@
 
 <script>
 import QueryInfo from "../components/QueryInfo";
+import Tag2 from "../components/Tag2";
 import { install, control } from "../modules";
 
 export default {
   name: "control",
-  components: { QueryInfo },
+  components: { QueryInfo, Tag2 },
   data() {
     return {
       formList: [
@@ -165,10 +170,17 @@ export default {
 </script>
 
 <style lang="less">
-.control-env {
-  border: 1px dashed #e9e9e9;
-  border-radius: 6px;
-  background-color: #fafafa;
+.control {
+  height: 100%;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 24px;
+
+  // .control-env {
+  // border: 1px dashed #e9e9e9;
+  // border-radius: 6px;
+  // background-color: #fafafa;
 
   .env-title {
     padding: 10px;
@@ -187,17 +199,18 @@ export default {
     justify-content: flex-start;
     align-items: center;
   }
-}
+  // }
 
-.control-btn {
-  width: 100%;
-  margin: 24px 0 0 0;
-  // background: rgb(190, 200, 200);
+  .control-btn {
+    width: 100%;
+    margin: 24px 0 0 0;
+    // background: rgb(190, 200, 200);
 
-  .btn {
-    width: 33.33%;
-    height: 100px;
-    font-size: 24px;
+    .btn {
+      width: 33.33%;
+      height: 100px;
+      font-size: 24px;
+    }
   }
 }
 </style>

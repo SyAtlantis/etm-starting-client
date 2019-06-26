@@ -3,9 +3,9 @@
     <div class="setting-content">
       <a-form>
         <a-form-item label="公网IP" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
-          <a-input placeholder="请输入公网IP!" v-model="publicIp">
-            <a-icon slot="addonAfter" type="sync" @click="getIp"/>
-          </a-input>
+          <a-input-search placeholder="请输入公网IP!" v-model="publicIp">
+            <a-icon slot="enterButton" type="sync" @click="getIp"/>
+          </a-input-search>
         </a-form-item>
         <a-form-item label="端口号" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
           <a-input placeholder="请输入端口号!" v-model="port"/>
@@ -87,6 +87,10 @@ export default {
 <style lang="less">
 .setting {
   height: 100%;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 24px;
 
   .setting-content {
     padding-top: 20px;
