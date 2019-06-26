@@ -1,84 +1,164 @@
 <template>
   <div class="control">
-    <a-card title="环境状态" class="control-env">
-      <a-form :form="form">
-        <a-form-item label="Nodejs" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
-          <QueryInfo :func="getNodejsInfo" name="nodejsInfo"></QueryInfo>
-        </a-form-item>
-        <a-form-item label="Git" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
-          <QueryInfo :func="getGitInfo" name="gitInfo"></QueryInfo>
-        </a-form-item>
-        <a-form-item label="PM2" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
-          <QueryInfo :func="getPm2Info" name="pm2Info"></QueryInfo>
-        </a-form-item>
-        <a-form-item label="EnTanMo" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
-          <QueryInfo :func="getProjecInfo" name="projectInfo"></QueryInfo>
-        </a-form-item>
+    <!-- <a-card title="环境状态" class="control-env"> -->
+    <div class="control-env">
+      <div class="env-title">
+        <strong>运行环境状态 :</strong>
+      </div>
+      <!-- <a-divider dashed/> -->
+      <a-form v-for="item in formList" :key="item.name">
         <a-form-item
-          label="配置设置"
-          class="spin"
+          v-if="item.name !='setting'"
+          class="env-item"
+          :key="item.name"
+          :label="item.label"
           :labelCol="{span: 4}"
           :wrapperCol="{span: 18}"
-          required
+          :required="item.required"
         >
+          <QueryInfo :func1="item.func1" :func2="item.func2" :name="item.name"></QueryInfo>
+        </a-form-item>
+        <a-form-item v-else label="参数设置" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
           <div v-if="isSetted">
-            <a-tag color="#87d068">已设置</a-tag>
+            <a-tag class="evn-setting" color="#87d068">已设置</a-tag>
+            <span>可进入设置页面修改！</span>
           </div>
           <div v-else>
-            <a-tag color="#e56255">未设置</a-tag>
+            <a-tag class="evn-setting" color="#e56255">未设置</a-tag>
             <span>请先进入设置页面设置！</span>
-            <slot class="queryinfo-content"/>
           </div>
         </a-form-item>
       </a-form>
-    </a-card>
+    </div>
+    <!-- </a-card> -->
+
     <a-button-group class="control-btn">
-      <a-button class="btn" icon="play-circle" type="primary" ghost :disabled="!canStart">启动</a-button>
-      <a-button class="btn" icon="pause-circle" type="primary" ghost :disabled="!canPause">暂停</a-button>
-      <a-button class="btn" icon="stop" type="primary" ghost :disabled="!canStop">停止</a-button>
+      <a-button
+        class="btn"
+        icon="play-circle"
+        type="primary"
+        ghost
+        :disabled="!canStart"
+        @click="start"
+      >启动</a-button>
+      <a-button
+        class="btn"
+        icon="pause-circle"
+        type="primary"
+        ghost
+        :disabled="!canPause"
+        @click="pause"
+      >暂停</a-button>
+      <a-button class="btn" icon="stop" type="primary" ghost :disabled="!canStop" @click="stop">停止</a-button>
     </a-button-group>
-    <!-- <QueryInfo class="control-content" :func="getProjecInfo" name="projectInfo"></QueryInfo> -->
   </div>
 </template>
 
 <script>
 import QueryInfo from "../components/QueryInfo";
-import { install } from "../modules";
+import { install, control } from "../modules";
 
 export default {
   name: "control",
   components: { QueryInfo },
   data() {
     return {
-      form: this.$form.createForm(this)
+      formList: [
+        {
+          name: "nodejsInfo",
+          label: "Nodejs",
+          required: true,
+          func1: install.getNodejsInfo,
+          func2: install.installNodejs
+        },
+        {
+          name: "pm2Info",
+          label: "PM2",
+          required: true,
+          func1: install.getPm2Info,
+          func2: install.installPm2
+        },
+        {
+          name: "etmInfo",
+          label: "EnTanMo",
+          required: true,
+          func1: install.getEntanmoInfo,
+          func2: install.installEntanmo
+        },
+        {
+          name: "setting"
+        }
+      ]
     };
   },
   computed: {
     isSetted() {
-      return this.$store.state.setting.port && this.$store.state.setting.secret;
+      return this.$store.state.setting.port;
     },
     canStart() {
+      if (!this.$store.state.setting.port) {
+        return false;
+      }
+      if (this.$store.state.install.etmInfo.status != "installed") {
+        return false;
+      }
+      if (this.$store.state.install.nodejsInfo.status != "installed") {
+        return false;
+      }
+      if (this.$store.state.install.pm2Info.status != "installed") {
+        return false;
+      }
+      if (this.$store.state.control.start) {
+        return false;
+      }
       return true;
     },
     canPause() {
-      return true;
+      if (this.$store.state.control.start && !this.$store.state.control.pause) {
+        return true;
+      }
+      return false;
     },
     canStop() {
-      return true;
+      if (this.$store.state.control.start) {
+        return true;
+      }
+      return false;
     }
   },
   methods: {
-    getNodejsInfo() {
-      return install.getNodejsInfo();
+    start() {
+      control
+        .start()
+        .then(res => {
+          console.log(res);
+          this.$store.state.control.start = true;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    getGitInfo() {
-      return install.getGitInfo();
+    pause() {
+      control
+        .pause()
+        .then(res => {
+          console.log(res);
+          this.$store.state.control.pause = true;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    getPm2Info() {
-      return install.getPm2Info();
-    },
-    getProjecInfo() {
-      return install.getProjecInfo();
+    stop() {
+      control
+        .stop()
+        .then(res => {
+          console.log(res);
+          this.$store.state.control.start = false;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
@@ -89,6 +169,18 @@ export default {
   border: 1px dashed #e9e9e9;
   border-radius: 6px;
   background-color: #fafafa;
+
+  .env-title {
+    padding: 10px;
+    font-size: 16px;
+    align-items: center;
+  }
+
+  .evn-setting {
+    width: 65px;
+    text-align: center;
+    margin: 0 10px;
+  }
 
   .queryinfo-installed {
     display: flex;

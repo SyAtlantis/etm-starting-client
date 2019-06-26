@@ -8,7 +8,8 @@ import store from "./store"
 import {
   Button, Menu, Icon, Input, Card,
   Steps, List, Avatar, Tag, Form,
-  Radio, Upload, Timeline, Spin, Divider
+  Radio, Upload, Timeline, Spin, Divider,
+  Tooltip
 } from "ant-design-vue"
 
 Vue.use(Button)
@@ -26,6 +27,7 @@ Vue.use(Upload)
 Vue.use(Timeline)
 Vue.use(Spin)
 Vue.use(Divider)
+Vue.use(Tooltip)
 
 // Vue.use(Antd)
 

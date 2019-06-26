@@ -13,27 +13,27 @@
             @click="reload(item.name)"
           />
           <a-avatar slot="avatar" :size="48" shape="square" :src="item.avatar"/>
-          <span v-if="item.status == 'error'" slot="description">{{item.errInfo}}</span>
+          <span v-if="item.status == 'error'" slot="description">{{item.message}}</span>
           <template v-else slot="description" v-for="({name, value}, index) in item.actions">
             <span :key="name">{{name}} : {{value}}</span>
             <a-divider :key="index" type="vertical" v-if="index !== item.actions.length-1"/>
           </template>
           <span slot="description"></span>
         </a-list-item-meta>
-        <Tag :type="item.status" slot="extra"/>
+        <Tag2 :type="item.status" slot="extra"/>
       </a-list-item>
     </a-list>
   </div>
 </template>
 
 <script>
-import Tag from "../components/Tag";
+import Tag2 from "../components/Tag2";
 
 import { monitor } from "../modules";
 
 export default {
   name: "monitor",
-  components: { Tag },
+  components: { Tag2 },
   data() {
     return {
       // listData: [
@@ -154,7 +154,7 @@ export default {
           name: "netInfo",
           avatar: require("@/assets/net.png"),
           status: this.$store.state.monitor.netInfo.status,
-          errInfo: this.$store.state.monitor.netInfo.errInfo,
+          message: this.$store.state.monitor.netInfo.message,
           actions: [
             {
               name: "公网IP",
@@ -171,7 +171,7 @@ export default {
           name: "gpuInfo",
           avatar: require("@/assets/gpu.png"),
           status: this.$store.state.monitor.gpuInfo.status,
-          errInfo: this.$store.state.monitor.gpuInfo.errInfo,
+          message: this.$store.state.monitor.gpuInfo.message,
           actions: [
             {
               name: "型号",
@@ -188,7 +188,7 @@ export default {
           name: "procInfo",
           avatar: require("@/assets/proc.png"),
           status: this.$store.state.monitor.procInfo.status,
-          errInfo: this.$store.state.monitor.procInfo.errInfo,
+          message: this.$store.state.monitor.procInfo.message,
           actions: [
             {
               name: "进程目录",
@@ -205,7 +205,7 @@ export default {
           name: "syncInfo",
           avatar: require("@/assets/sync.png"),
           status: this.$store.state.monitor.syncInfo.status,
-          errInfo: this.$store.state.monitor.syncInfo.errInfo,
+          message: this.$store.state.monitor.syncInfo.message,
           actions: [
             {
               name: "最新高度",
@@ -226,7 +226,7 @@ export default {
           name: "blockInfo",
           avatar: require("@/assets/block.png"),
           status: this.$store.state.monitor.blockInfo.status,
-          errInfo: this.$store.state.monitor.blockInfo.errInfo,
+          message: this.$store.state.monitor.blockInfo.message,
           actions: [
             {
               name: "上一个成功出块时间",
@@ -305,7 +305,7 @@ export default {
         })
         .catch(err => {
           this.$store.state.monitor[name].status = "error";
-          this.$store.state.monitor[name].errInfo = `${err}`;
+          this.$store.state.monitor[name].message = `${err}`;
         });
     }
   }

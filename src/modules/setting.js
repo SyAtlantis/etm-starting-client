@@ -1,12 +1,24 @@
+import Server from "./server";
+
+let server = new Server();
+
 class Setting {
 
-    static async setPort(port) {
-        void (port)
+    static async setVulue(data) {
+        return await server.put("/setting/setVulue", data);
     }
 
-    static async setSecret(secret) {
-        void (secret)
-    }
+    // static async setPublicIp(data) {
+    //     return await server.put("/setting/setPublicTp", data);
+    // }
+
+    // static async setPort(data) {
+    //     return await server.put("/setting/setPort", data);
+    // }
+
+    // static async setSecret(data) {
+    //     return await server.put("/setting/setSecret", data);
+    // }
 
 }
 
