@@ -60,6 +60,7 @@ export default new Vuex.Store({
     control: {
       start: false,
       pause: false,
+      boot: false
     }
   },
   mutations: {

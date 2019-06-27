@@ -3,7 +3,7 @@
     <div class="setting-content">
       <a-form>
         <a-form-item label="公网IP" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
-          <a-input-search placeholder="请输入公网IP!" v-model="publicIp">
+          <a-input-search placeholder="请输入公网IP!" v-model="this.publicIp">
             <a-icon slot="enterButton" type="sync" @click="getIp"/>
           </a-input-search>
         </a-form-item>

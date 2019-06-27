@@ -71,7 +71,10 @@ export default {
           }
 
           if (data.success) {
-            if (data.results) {
+            console.log(`check ${this.name} success=>${data.results}`);
+
+            let re = /\D*\d+\.\d+\.\d+$/;
+            if (data.results && re.test(data.results.trim())) {
               this.spinning = false;
               this.status = "installed";
               this.version = data.results;
@@ -85,6 +88,11 @@ export default {
             this.spinning = false;
             this.status = "uninstalled";
             this.$store.state.install[this.name].status = "uninstalled";
+
+            // this.$message.warning(
+            //   `check ${this.name} failure=>${data.message}`
+            // );
+            console.log(`check ${this.name} failure=>${data.message}`);
           }
         })
         .catch(err => {
@@ -92,7 +100,8 @@ export default {
           this.status = "checkfail";
           this.$store.state.install[this.name].status = "checkfail";
 
-          console.log(`queryinfo ${this.name} error=>${err}`);
+          // this.$message.error(`check ${this.name} error=>${err}`);
+          console.log(`check ${this.name} error=>${err}`);
         });
     },
     install() {
@@ -101,9 +110,31 @@ export default {
 
       this.func2()
         .then(res => {
-          console.log(res);
+          let { data } = res;
+          if (!data || res.status !== 200) {
+            throw new Error("Result data or status error!");
+          }
+
+          if (data.success) {
+            console.log(`install ${this.name} success=>${res}`);
+            this.spinning = false;
+            this.status = "installed";
+            this.check();
+          } else {
+            this.spinning = false;
+            this.status = "installfail";
+
+            // this.$message.warning(
+            //   `install ${this.name} failure=>${data.message}`
+            // );
+            console.log(`install ${this.name} failure=>${data.message}`);
+          }
         })
         .catch(err => {
+          this.spinning = false;
+          this.status = "installfail";
+
+          // this.$message.error(`install ${this.name} error=>${err}`);
           console.log(`install ${this.name} error=>${err}`);
         });
     }

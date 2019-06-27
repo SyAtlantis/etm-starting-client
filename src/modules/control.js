@@ -16,6 +16,14 @@ class Control {
         return await server.put("/control/pause", data);
     }
 
+    static async boot(data) {
+        return await server.put("/control/boot", data);
+    }
+
+    static async unboot(data) {
+        return await server.put("/control/unboot", data);
+    }
+
 }
 
 export default Control;

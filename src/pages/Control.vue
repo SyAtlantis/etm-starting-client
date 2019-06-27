@@ -35,6 +35,10 @@
     <div class="env-title">
       <strong>运行状态 :</strong>
       <Tag2 type="normal"/>
+      <span class="env-title-open" v-if="isInstallAll">
+        开机启动
+        <a-switch :checked="this.$store.state.control.boot" @change="boot"/>
+      </span>
     </div>
     <a-button-group class="control-btn">
       <a-button
@@ -100,7 +104,7 @@ export default {
     isSetted() {
       return this.$store.state.setting.port;
     },
-    canStart() {
+    isInstallAll() {
       if (!this.$store.state.setting.port) {
         return false;
       }
@@ -111,6 +115,12 @@ export default {
         return false;
       }
       if (this.$store.state.install.pm2Info.status != "installed") {
+        return false;
+      }
+      return true;
+    },
+    canStart() {
+      if (!this.isInstallAll) {
         return false;
       }
       if (this.$store.state.control.start) {
@@ -136,34 +146,123 @@ export default {
       control
         .start()
         .then(res => {
-          console.log(res);
-          this.$store.state.control.start = true;
+          let { data } = res;
+          if (!data || res.status !== 200) {
+            throw new Error("Result data or status error!");
+          }
+
+          if (data.success) {
+            console.log(`start success=>${res}`);
+            this.$store.state.control.start = true;
+          } else {
+            // this.$message.warning(
+            //   `start failure=>${data.message}`
+            // );
+            console.log(`start failure=>${data.message}`);
+          }
         })
         .catch(err => {
-          console.log(err);
+          // this.$message.error(`start error=>${err}`);
+          console.log(`start error=>${err}`);
         });
     },
     pause() {
       control
         .pause()
         .then(res => {
-          console.log(res);
-          this.$store.state.control.pause = true;
+          let { data } = res;
+          if (!data || res.status !== 200) {
+            throw new Error("Result data or status error!");
+          }
+
+          if (data.success) {
+            console.log(`pause success=>${res}`);
+            this.$store.state.control.pause = true;
+          } else {
+            // this.$message.warning(
+            //   `pause failure=>${data.message}`
+            // );
+            console.log(`pause failure=>${data.message}`);
+          }
         })
         .catch(err => {
-          console.log(err);
+          // this.$message.error(`pause error=>${err}`);
+          console.log(`pause error=>${err}`);
         });
     },
     stop() {
       control
         .stop()
         .then(res => {
-          console.log(res);
-          this.$store.state.control.start = false;
+          let { data } = res;
+          if (!data || res.status !== 200) {
+            throw new Error("Result data or status error!");
+          }
+
+          if (data.success) {
+            console.log(`stop success=>${res}`);
+            this.$store.state.control.start = false;
+          } else {
+            // this.$message.warning(
+            //   `stop failure=>${data.message}`
+            // );
+            console.log(`stop failure=>${data.message}`);
+          }
         })
         .catch(err => {
-          console.log(err);
+          // this.$message.error(`stop error=>${err}`);
+          console.log(`stop error=>${err}`);
         });
+    },
+    boot(checked) {
+      console.log(checked);
+      if (checked) {
+        control
+          .boot()
+          .then(res => {
+            let { data } = res;
+            if (!data || res.status !== 200) {
+              throw new Error("Result data or status error!");
+            }
+
+            if (data.success) {
+              console.log(`set boot success=>${res}`);
+              this.$store.state.control.boot = true;
+            } else {
+              // this.$message.warning(
+              //   `set boot failure=>${data.message}`
+              // );
+              console.log(`set boot failure=>${data.message}`);
+            }
+          })
+          .catch(err => {
+            // this.$message.error(`set boot error=>${err}`);
+            console.log(`set boot error=>${err}`);
+          });
+      } else {
+        control
+          .unboot()
+          .then(res => {
+            let { data } = res;
+            if (!data || res.status !== 200) {
+              throw new Error("Result data or status error!");
+            }
+
+            if (data.success) {
+              console.log(`set unboot success=>${res}`);
+              this.$store.state.control.boot = false;
+            } else {
+              // this.$message.warning(
+              //   `set unboot failure=>${data.message}`
+              // );
+              console.log(`set unboot failure=>${data.message}`);
+            }
+          })
+          .catch(err => {
+            // this.$message.error(`set unboot error=>${err}`);
+            console.log(`set unboot error=>${err}`);
+          });
+      }
     }
   }
 };
@@ -186,6 +285,10 @@ export default {
     padding: 10px;
     font-size: 16px;
     align-items: center;
+
+    .env-title-open {
+      float: right;
+    }
   }
 
   .evn-setting {
