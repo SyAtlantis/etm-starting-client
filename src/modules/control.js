@@ -4,6 +4,10 @@ let server = new Server();
 
 class Control {
 
+    static async isStarted(data) {
+        return await server.get("/control/isStarted", data);
+    }
+
     static async start(data) {
         return await server.put("/control/start", data);
     }

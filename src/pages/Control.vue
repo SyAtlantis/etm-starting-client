@@ -1,11 +1,8 @@
 <template>
   <div class="control">
-    <!-- <a-card title="环境状态" class="control-env"> -->
-    <!-- <div class="control-env"> -->
     <div class="env-title">
       <strong>运行环境 :</strong>
     </div>
-    <!-- <a-divider dashed/> -->
     <a-form v-for="item in formList" :key="item.name">
       <a-form-item
         v-if="item.name !='setting'"
@@ -18,23 +15,23 @@
       >
         <QueryInfo :func1="item.func1" :func2="item.func2" :name="item.name"></QueryInfo>
       </a-form-item>
-      <a-form-item v-else label="参数设置" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
+      <a-form-item v-else label="参数设置" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
         <div v-if="isSetted">
-          <a-tag class="evn-setting" color="#87d068">已设置</a-tag>
+          <Tag3 type="setted"/>
           <span>可进入设置页面修改！</span>
         </div>
         <div v-else>
-          <a-tag class="evn-setting" color="#e56255">未设置</a-tag>
+          <Tag3 type="unsetted"/>
           <span>请先进入设置页面设置！</span>
         </div>
       </a-form-item>
     </a-form>
-    <!-- </div> -->
-    <!-- </a-card> -->
+
     <a-divider dashed/>
+
     <div class="env-title">
       <strong>运行状态 :</strong>
-      <Tag2 type="normal"/>
+      <Tag3 :type="this.$store.state.control.start?'started':'unstarted'"/>
       <span class="env-title-open" v-if="isInstallAll">
         开机启动
         <a-switch :checked="this.$store.state.control.boot" @change="boot"/>
@@ -64,12 +61,12 @@
 
 <script>
 import QueryInfo from "../components/QueryInfo";
-import Tag2 from "../components/Tag2";
+import Tag3 from "../components/Tag3";
 import { install, control } from "../modules";
 
 export default {
   name: "control",
-  components: { QueryInfo, Tag2 },
+  components: { QueryInfo, Tag3 },
   data() {
     return {
       formList: [
@@ -117,6 +114,7 @@ export default {
       if (this.$store.state.install.pm2Info.status != "installed") {
         return false;
       }
+      this.isStarted();
       return true;
     },
     canStart() {
@@ -263,6 +261,30 @@ export default {
             console.log(`set unboot error=>${err}`);
           });
       }
+    },
+    isStarted() {
+      control
+        .isStarted()
+        .then(res => {
+          let { data } = res;
+          if (!data || res.status !== 200) {
+            throw new Error("Result data or status error!");
+          }
+
+          if (data.success) {
+            console.log(`get isStarted success=>${res}`);
+            this.$store.state.control.start = data.results;
+          } else {
+            // this.$message.warning(
+            //   `get isStarted failure=>${data.message}`
+            // );
+            console.log(`get isStarted failure=>${data.message}`);
+          }
+        })
+        .catch(err => {
+          // this.$message.error(`get isStarted error=>${err}`);
+          console.log(`get isStarted error=>${err}`);
+        });
     }
   }
 };
@@ -275,11 +297,6 @@ export default {
   border-radius: 4px;
   overflow: auto;
   padding: 8px 24px;
-
-  // .control-env {
-  // border: 1px dashed #e9e9e9;
-  // border-radius: 6px;
-  // background-color: #fafafa;
 
   .env-title {
     padding: 10px;
@@ -302,12 +319,10 @@ export default {
     justify-content: flex-start;
     align-items: center;
   }
-  // }
 
   .control-btn {
     width: 100%;
     margin: 24px 0 0 0;
-    // background: rgb(190, 200, 200);
 
     .btn {
       width: 33.33%;
