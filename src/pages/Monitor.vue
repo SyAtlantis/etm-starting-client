@@ -12,6 +12,7 @@
             shape="circle"
             @click="reload(item.name)"
           />
+          <Tag2 class="title-tag" :type="item.status" slot="title"/>
           <a-avatar slot="avatar" :size="48" shape="square" :src="item.avatar"/>
           <span v-if="item.status == 'error'" slot="description">{{item.message}}</span>
           <template v-else slot="description" v-for="({name, value}, index) in item.actions">
@@ -20,7 +21,6 @@
           </template>
           <span slot="description"></span>
         </a-list-item-meta>
-        <Tag2 :type="item.status" slot="extra"/>
       </a-list-item>
     </a-list>
   </div>
@@ -162,7 +162,7 @@ export default {
             },
             {
               name: "端口",
-              value: "4096"
+              value: this.$store.state.setting.port
             }
           ]
         },
@@ -208,16 +208,16 @@ export default {
           message: this.$store.state.monitor.syncInfo.message,
           actions: [
             {
-              name: "最新高度",
-              value: "12345"
+              name: "是否在同步",
+              value: this.$store.state.monitor.syncInfo.data.syncing
             },
             {
-              name: "我的高度",
-              value: "12000"
+              name: "正在同步区块数量",
+              value: this.$store.state.monitor.syncInfo.data.blocks
             },
             {
-              name: "当前奖励",
-              value: "6ETM"
+              name: "区块高度",
+              value: this.$store.state.monitor.syncInfo.data.height
             }
           ]
         },
@@ -229,20 +229,20 @@ export default {
           message: this.$store.state.monitor.blockInfo.message,
           actions: [
             {
-              name: "上一个成功出块时间",
-              value: "2019.06.11 11:11"
+              name: "成功块数",
+              value: this.$store.state.monitor.blockInfo.data.producedblocks
             },
             {
-              name: "成功高度",
-              value: "123"
+              name: "失败块数",
+              value: this.$store.state.monitor.blockInfo.data.missedblocks
             },
             {
-              name: "上一个失败出块时间",
-              value: "2019.06.11 11:11"
+              name: "出块率",
+              value: this.$store.state.monitor.blockInfo.data.productivity
             },
             {
-              name: "失败高度",
-              value: "456"
+              name: "总奖励",
+              value: this.$store.state.monitor.blockInfo.data.rewards
             }
           ]
         }
@@ -261,26 +261,14 @@ export default {
       this.getInfo(name);
     },
     getInfo(name) {
-      let func;
-      switch (name) {
-        case this.listData[0].name:
-          func = monitor.getNetInfo;
-          break;
-        case this.listData[1].name:
-          func = monitor.getGpuInfo;
-          break;
-        case this.listData[2].name:
-          func = monitor.getProcInfo;
-          break;
-        case this.listData[3].name:
-          func = monitor.getSyncInfo;
-          break;
-        case this.listData[4].name:
-          func = monitor.getBlockInfo;
-          break;
-        default:
-          break;
-      }
+      const funcs = {
+        netInfo: monitor.getNetInfo,
+        gpuInfo: monitor.getGpuInfo,
+        procInfo: monitor.getProcInfo,
+        syncInfo: monitor.getSyncInfo,
+        blockInfo: monitor.getBlockInfo
+      };
+      let func = funcs[name];
 
       this.$store.state.monitor[name].status = "loading";
 
@@ -322,6 +310,10 @@ export default {
 
   .title-reload {
     margin-left: 20px;
+  }
+
+  .title-tag {
+    float: right;
   }
 }
 </style>

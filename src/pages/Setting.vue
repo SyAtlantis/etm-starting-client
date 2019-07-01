@@ -1,23 +1,67 @@
 <template>
   <a-spin class="setting" :spinning="spinning" tip="保存中...">
     <div class="setting-content">
-      <a-form>
+      <a-form :form="form" @submit="handleSubmit">
         <a-form-item label="公网IP" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
-          <a-input-search placeholder="请输入公网IP!" v-model="this.publicIp">
-            <a-icon slot="enterButton" type="sync" @click="getIp"/>
-          </a-input-search>
+          <a-input
+            class="input-ip"
+            placeholder="请输入公网IP!"
+            v-decorator="[
+              'publicIp',
+              {
+                rules: [{
+                  type: 'string', message: 'The input is not valid IP',
+                }, { 
+                  validator: checkPublicIp 
+                }],
+                initialValue: this.$store.state.setting.publicIp,
+              }
+            ]"
+          />
+          <a-button class="button-ip" type="primary" icon="sync" @click="getIp"/>
         </a-form-item>
-        <a-form-item label="端口号" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
-          <a-input placeholder="请输入端口号!" v-model="port"/>
+        <a-form-item label="端口号" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
+          <a-input
+            placeholder="请输入端口号!"
+            v-decorator="[
+              'port',
+              {
+                rules: [{
+                  type: 'string', message: 'The input is not valid port',
+                }, {
+                  required: true, message: 'Please input your port!',
+                },{ 
+                  validator: checkPort 
+                }],
+                initialValue: this.$store.state.setting.port,
+              }
+            ]"
+          />
         </a-form-item>
         <a-form-item label="Secret" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
-          <a-textarea :rows="4" placeholder="请输入Secret!【非受托人无需输入】" v-model="secret"/>
+          <a-textarea
+            :rows="4"
+            placeholder="请输入Secret!【非受托人无需输入】"
+            v-decorator="[
+              'secret',
+              {
+                rules: [{
+                  type: 'string', message: 'The input is not valid secret',
+                }, ,{ 
+                  validator: checkSecret 
+                }],
+                initialValue: this.$store.state.setting.secret,
+              }
+            ]"
+          />
+        </a-form-item>
+        <a-form-item :labelCol="{span: 4}" :wrapperCol="{span: 18, offset: 4}">
+          <div class="setting-button">
+            <a-button type="primary" html-type="submit">保存</a-button>
+            <a-button type="primary" @click="cancle">取消</a-button>
+          </div>
         </a-form-item>
       </a-form>
-    </div>
-    <div class="setting-button">
-      <a-button type="primary" @click="save" :disabled="port==''">保存</a-button>
-      <a-button type="primary" @click="cancle">取消</a-button>
     </div>
   </a-spin>
 </template>
@@ -31,38 +75,57 @@ export default {
   components: {},
   data() {
     return {
-      publicIp: this.$store.state.setting.publicIp,
-      port: "4096",
-      secret: "",
+      form: this.$form.createForm(this),
+      // publicIp: this.$store.state.setting.publicIp,
+      // port: this.$store.state.setting.port,
+      // secret: this.$store.state.setting.secret,
       spinning: false
     };
   },
-  computed: {},
+  computed: {
+    canSave() {
+      let publicIp = this.form.getFieldValue("publicIp");
+      let port = this.form.getFieldValue("port");
+      let secret = this.form.getFieldValue("secret");
+      console.log(publicIp, port, secret);
+      if (publicIp !== this.$store.state.setting.publicIp) {
+        return true;
+      }
+      if (port !== this.$store.state.setting.port && port !== "") {
+        return true;
+      }
+      if (secret !== this.$store.state.setting.secret) {
+        return true;
+      }
+      return false;
+    }
+  },
   methods: {
-    save() {
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          console.log("Received values of form: ", values);
+          this.save(values);
+        }
+      });
+    },
+    save(data) {
       this.spinning = true;
 
-      let publicIp =
-        this.$store.state.setting.publicIp !== this.publicIp
-          ? this.publicIp
-          : "";
-      let port = this.$store.state.setting.port !== this.port ? this.port : "";
-      let secret =
-        this.$store.state.setting.secret !== this.secret ? this.secret : "";
-
-      let data = {
-        publicIp,
-        port,
-        secret
-      };
+      // let data = {
+      //   publicIp: this.publicIp,
+      //   port: this.port,
+      //   secret: this.secret
+      // };
       setting
         .setVulue(data)
         .then(res => {
           console.log(res);
           this.spinning = false;
-          this.$store.state.setting.publicIp = this.publicIp;
-          this.$store.state.setting.port = this.port;
-          this.$store.state.setting.secret = this.secret;
+          this.$store.state.setting.publicIp = data.publicIp;
+          this.$store.state.setting.port = data.port;
+          this.$store.state.setting.secret = data.secret;
         })
         .catch(err => {
           console.log(err);
@@ -70,15 +133,41 @@ export default {
         });
     },
     cancle() {
-      this.publicIp = this.$store.state.setting.publicIp;
-      this.port = this.$store.state.setting.port;
-      this.secret = this.$store.state.setting.secret;
+      this.form.setFieldsValue({
+        publicIp: this.$store.state.setting.publicIp,
+        port: this.$store.state.setting.port,
+        secret: this.$store.state.setting.secret
+      });
     },
     getIp() {
-      if (this.$store.state.monitor.netInfo.data.publicIp !== this.publicIp) {
-        this.publicIp = this.$store.state.monitor.netInfo.data.publicIp;
+      let publicIp = this.form.getFieldValue("publicIp");
+
+      if (this.$store.state.monitor.netInfo.data.publicIp !== publicIp) {
+        this.form.setFieldsValue({
+          publicIp: this.$store.state.monitor.netInfo.data.publicIp
+        });
       }
-      return this.$store.state.setting.publicIp;
+    },
+    checkPublicIp(rule, value, cb) {
+      let reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+      if (value && !reg.test(value)) {
+        return cb("The input is not valid IP!");
+      }
+      cb();
+    },
+    checkPort(rule, value, cb) {
+      let reg = /^(\d)+$/g;
+      let p = parseInt(value);
+      if (!reg.test(value) || p > 65535 || p <= 0) {
+        return cb("The input is not valid port!");
+      }
+      cb();
+    },
+    checkSecret(rule, value, cb) {
+      // if (!value) {
+      //   return cb("The input is not valid secret!");
+      // }
+      cb();
     }
   }
 };
@@ -94,6 +183,13 @@ export default {
 
   .setting-content {
     padding-top: 20px;
+
+    .input-ip {
+      width: calc(100% - 50px);
+    }
+    .button-ip {
+      width: 50px;
+    }
   }
 
   .setting-button {
