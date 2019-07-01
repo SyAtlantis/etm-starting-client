@@ -64,9 +64,6 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setStep(state, num) {
-      state.install.step = num;
-    }
   },
   actions: {}
 });
