@@ -1,15 +1,18 @@
 <template>
   <div class="home">
-    <div class="home-menu">
+    <Control v-show="step===0"/>
+    <Monitor v-show="step===1"/>
+    <Setting v-show="step===2"/>
+    <!-- <div class="home-menu">
       <div class="home-logo">
         <h2>ETM-Starting</h2>
       </div>
-      <a-menu :defaultSelectedKeys="[selectedKey]" mode="vertical" @select="menuSelect">
-        <!-- <a-menu-item key="install">
+    <a-menu :defaultSelectedKeys="[selectedKey]" mode="vertical" @select="menuSelect">-->
+    <!-- <a-menu-item key="install">
           <a-icon type="code"/>
           <span>安装</span>
-        </a-menu-item>-->
-        <a-menu-item key="control">
+    </a-menu-item>-->
+    <!-- <a-menu-item key="control">
           <a-icon type="tool"/>
           <span>操作</span>
         </a-menu-item>
@@ -23,12 +26,12 @@
         </a-menu-item>
       </a-menu>
     </div>
-    <div class="home-body">
-      <!-- <Install v-show="selectedKey==='install'"/> -->
-      <Monitor v-show="selectedKey==='monitor'"/>
+    <div class="home-body">-->
+    <!-- <Install v-show="selectedKey==='install'"/> -->
+    <!-- <Monitor v-show="selectedKey==='monitor'"/>
       <Control v-show="selectedKey==='control'"/>
       <Setting v-show="selectedKey==='setting'"/>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -50,6 +53,11 @@ export default {
     return {
       selectedKey: "control"
     };
+  },
+  computed: {
+    step() {
+      return this.$store.state.install.step;
+    }
   },
   methods: {
     menuSelect(item) {

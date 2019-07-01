@@ -9,7 +9,7 @@ import {
   Button, Menu, Icon, Input, Card,
   Steps, List, Avatar, Tag, Form,
   Radio, Upload, Timeline, Spin, Divider,
-  Tooltip, message, Switch
+  Tooltip, message, Switch, Affix
 } from "ant-design-vue"
 
 Vue.use(Button)
@@ -29,6 +29,7 @@ Vue.use(Spin)
 Vue.use(Divider)
 Vue.use(Tooltip)
 Vue.use(Switch)
+Vue.use(Affix)
 
 Vue.prototype.$message = message;
 

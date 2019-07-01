@@ -302,10 +302,11 @@ export default {
 
 <style lang="less">
 .monitor {
+  width: 100%;
   height: 100%;
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  overflow: auto;
+  // border: 1px solid #e8e8e8;
+  // border-radius: 4px;
+  // overflow: auto;
   padding: 8px 24px;
 
   .title-reload {

@@ -1,6 +1,24 @@
 <template>
   <div class="control">
-    <div class="env-title">
+    <Layout>
+      <a-icon slot="head-left" type="arrow-left"/>
+      <a-icon slot="head-right" type="setting"/>
+      <div slot="head-center">EnTanMo</div>
+      <div slot="body"></div>
+      <div slot="foot"></div>
+    </Layout>
+    <!-- <div class="head">
+      <a-button type="primary" ghost @click="openMonitor" icon="appstore"/>
+      <a-button type="primary" ghost @click="openSetting" icon="setting"/>
+    </div>-->
+    <!-- <a-affix offsetTop="10px">
+      <a-button type="primary" @click="openSetting" icon="setting"/>
+    </a-affix>
+    <br>
+    <a-affix offsetBottom="10px">
+      <a-button type="primary" @click="openMonitor" icon="appstore"/>
+    </a-affix>-->
+    <!-- <div class="env-title">
       <strong>运行环境 :</strong>
     </div>
     <a-form v-for="item in formList" :key="item.name">
@@ -55,18 +73,19 @@
         @click="pause"
       >暂停</a-button>
       <a-button class="btn" icon="stop" type="primary" ghost :disabled="!canStop" @click="stop">停止</a-button>
-    </a-button-group>
+    </a-button-group>-->
   </div>
 </template>
 
 <script>
+import Layout from "../components/Layout";
 import QueryInfo from "../components/QueryInfo";
 import Tag3 from "../components/Tag3";
 import { install, control } from "../modules";
 
 export default {
   name: "control",
-  components: { QueryInfo, Tag3 },
+  components: { Layout, QueryInfo, Tag3 },
   data() {
     return {
       formList: [
@@ -140,6 +159,12 @@ export default {
     }
   },
   methods: {
+    openMonitor() {
+      this.$store.state.install.step = 1;
+    },
+    openSetting() {
+      this.$store.state.install.step = 2;
+    },
     start() {
       control
         .start()
@@ -292,11 +317,21 @@ export default {
 
 <style lang="less">
 .control {
+  width: 100%;
   height: 100%;
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  overflow: auto;
-  padding: 8px 24px;
+  // border: 1px solid #e8e8e8;
+  // border-radius: 4px;
+  // overflow: auto;
+  // padding: 8px 24px;
+
+  // .head-icon {
+  //   font-size: 30px;
+  // }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .env-title {
     padding: 10px;

@@ -18,12 +18,10 @@ export default new Vuex.Store({
       pm2Info: {
         status: "uninstalled",
         version: "",
-      },
-      nextDisabled: true,
-      prevDisabled: false,
+      }
     },
     setting: {
-      publicIp: "",
+      ip: "",
       port: "4096",
       secret: ""
     },
@@ -63,7 +61,6 @@ export default new Vuex.Store({
       boot: false
     }
   },
-  mutations: {
-  },
+  mutations: {},
   actions: {}
 });
