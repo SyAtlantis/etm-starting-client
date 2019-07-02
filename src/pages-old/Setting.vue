@@ -1,12 +1,17 @@
 <template>
-  <a-spin class="setting" :spinning="spinning" tip="保存中...">
-    <div class="setting-content">
-      <a-form :form="form" @submit="handleSubmit">
-        <a-form-item label="公网IP" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
-          <a-input
-            class="input-ip"
-            placeholder="请输入公网IP!"
-            v-decorator="[
+  <Layout>
+    <a-icon slot="head-left" type="arrow-left"  @click="toBack"/>
+    <!-- <a-icon slot="head-right" type="setting"  @click="toMonitor"/> -->
+    <div slot="head-center">EnTanMo</div>
+    <div slot="body">
+      <a-spin class="setting" :spinning="spinning" tip="保存中...">
+        <div class="setting-content">
+          <a-form :form="form" @submit="handleSubmit">
+            <a-form-item label="公网IP" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
+              <a-input
+                class="input-ip"
+                placeholder="请输入公网IP!"
+                v-decorator="[
               'publicIp',
               {
                 rules: [{
@@ -17,13 +22,13 @@
                 initialValue: this.$store.state.setting.publicIp,
               }
             ]"
-          />
-          <a-button class="button-ip" type="primary" icon="sync" @click="getIp" />
-        </a-form-item>
-        <a-form-item label="端口号" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
-          <a-input
-            placeholder="请输入端口号!"
-            v-decorator="[
+              />
+              <a-button class="button-ip" type="primary" icon="sync" @click="getIp" />
+            </a-form-item>
+            <a-form-item label="端口号" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
+              <a-input
+                placeholder="请输入端口号!"
+                v-decorator="[
               'port',
               {
                 rules: [{
@@ -36,13 +41,13 @@
                 initialValue: this.$store.state.setting.port,
               }
             ]"
-          />
-        </a-form-item>
-        <a-form-item label="Secret" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
-          <a-textarea
-            :rows="4"
-            placeholder="请输入Secret!【非受托人无需输入】"
-            v-decorator="[
+              />
+            </a-form-item>
+            <a-form-item label="Secret" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
+              <a-textarea
+                :rows="4"
+                placeholder="请输入Secret!【非受托人无需输入】"
+                v-decorator="[
               'secret',
               {
                 rules: [{
@@ -53,26 +58,30 @@
                 initialValue: this.$store.state.setting.secret,
               }
             ]"
-          />
-        </a-form-item>
-        <a-form-item :labelCol="{span: 4}" :wrapperCol="{span: 18, offset: 4}">
-          <div class="setting-button">
-            <a-button type="primary" html-type="submit">保存</a-button>
-            <a-button type="primary" @click="cancle">取消</a-button>
-          </div>
-        </a-form-item>
-      </a-form>
+              />
+            </a-form-item>
+            <a-form-item :labelCol="{span: 4}" :wrapperCol="{span: 18, offset: 4}">
+              <div class="setting-button">
+                <a-button type="primary" html-type="submit">保存</a-button>
+                <a-button type="primary" @click="cancle">取消</a-button>
+              </div>
+            </a-form-item>
+          </a-form>
+        </div>
+      </a-spin>
     </div>
-  </a-spin>
+    <div slot="foot"></div>
+  </Layout>
 </template>
 
 <script>
+import Layout from "../components/Layout";
 // import SettingContent from "../components/SettingContent";
 import { setting } from "../modules";
 
 export default {
   name: "setting",
-  components: {},
+  components: { Layout },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -101,7 +110,7 @@ export default {
     }
   },
   methods: {
-    toBack() {
+    toBack(){
       this.$store.state.install.step = 0;
     },
     handleSubmit(e) {

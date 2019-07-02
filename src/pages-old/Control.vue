@@ -9,18 +9,13 @@
         class="env-item"
         :key="item.name"
         :label="item.label"
-        :labelCol="{xs: {span: 4}, sm: {span: 4}}"
-        :wrapperCol="{xs: {span: 10}, sm: {span: 20} }"
+        :labelCol="{span: 4}"
+        :wrapperCol="{span: 18}"
         :required="item.required"
       >
         <QueryInfo :func1="item.func1" :func2="item.func2" :name="item.name"></QueryInfo>
       </a-form-item>
-      <a-form-item
-        v-else
-        label="参数设置"
-        :labelCol="{xs: {span: 4}, sm: {span: 4}}"
-        :wrapperCol="{xs: {span: 18}, sm: {span: 18} }"
-      >
+      <a-form-item v-else label="参数设置" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
         <div v-if="isSetted">
           <Tag3 type="setted" />
           <span>可进入设置页面修改！</span>
@@ -65,13 +60,14 @@
 </template>
 
 <script>
+import Layout from "../components/Layout";
 import QueryInfo from "../components/QueryInfo";
 import Tag3 from "../components/Tag3";
 import { install, control } from "../modules";
 
 export default {
   name: "control",
-  components: { QueryInfo, Tag3 },
+  components: { Layout, QueryInfo, Tag3 },
   data() {
     return {
       formList: [
@@ -307,8 +303,8 @@ export default {
   height: 100%;
   // border: 1px solid #e8e8e8;
   // border-radius: 4px;
-  overflow: auto;
-  padding: 8px 24px;
+  // overflow: auto;
+  // padding: 8px 24px;
 
   // .head-icon {
   //   font-size: 30px;
@@ -343,7 +339,7 @@ export default {
 
   .control-btn {
     width: 100%;
-    // margin: 24px 0 0 0;
+    margin: 24px 0 0 0;
 
     .btn {
       width: 33.33%;

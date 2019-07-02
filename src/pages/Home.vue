@@ -1,42 +1,22 @@
 <template>
   <div class="home">
-    <Control v-show="step===0"/>
-    <Monitor v-show="step===1"/>
-    <Setting v-show="step===2"/>
-    <!-- <div class="home-menu">
-      <div class="home-logo">
-        <h2>ETM-Starting</h2>
+    <Layout>
+      <a-icon slot="head-left" v-if="step == 0" type="schedule" @click="toMonitor" />
+      <a-icon slot="head-left" v-else type="arrow-left" @click="toBack" />
+      <a-icon slot="head-right" v-show="step == 0" type="setting" @click="toSetting" />
+      <div slot="head-center"></div>
+      <div slot="body">
+        <Control v-show="step===0" />
+        <Monitor v-show="step===1" />
+        <Setting v-show="step===2" />
       </div>
-    <a-menu :defaultSelectedKeys="[selectedKey]" mode="vertical" @select="menuSelect">-->
-    <!-- <a-menu-item key="install">
-          <a-icon type="code"/>
-          <span>安装</span>
-    </a-menu-item>-->
-    <!-- <a-menu-item key="control">
-          <a-icon type="tool"/>
-          <span>操作</span>
-        </a-menu-item>
-        <a-menu-item key="monitor">
-          <a-icon type="eye"/>
-          <span>监控</span>
-        </a-menu-item>
-        <a-menu-item key="setting">
-          <a-icon type="setting"/>
-          <span>设置</span>
-        </a-menu-item>
-      </a-menu>
-    </div>
-    <div class="home-body">-->
-    <!-- <Install v-show="selectedKey==='install'"/> -->
-    <!-- <Monitor v-show="selectedKey==='monitor'"/>
-      <Control v-show="selectedKey==='control'"/>
-      <Setting v-show="selectedKey==='setting'"/>
-    </div>-->
+      <div slot="foot">©2019 En-Tan-Mo. All Rights Reserved.</div>
+    </Layout>
   </div>
 </template>
 
 <script>
-// import Install from "./Install";
+import Layout from "../components/Layout";
 import Monitor from "./Monitor";
 import Control from "./Control";
 import Setting from "./Setting";
@@ -44,15 +24,13 @@ import Setting from "./Setting";
 export default {
   name: "home",
   components: {
-    // Install,
+    Layout,
     Monitor,
     Control,
     Setting
   },
   data() {
-    return {
-      selectedKey: "control"
-    };
+    return {};
   },
   computed: {
     step() {
@@ -60,39 +38,22 @@ export default {
     }
   },
   methods: {
-    menuSelect(item) {
-      this.selectedKey = item.key;
+    toMonitor() {
+      this.$store.state.install.step = 1;
+    },
+    toSetting() {
+      this.$store.state.install.step = 2;
+    },
+    toBack() {
+      this.$store.state.install.step = 0;
     }
   }
 };
 </script>
 
 <style lang="less">
-@menusize: 200px;
-
 .home {
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-
-  .home-logo {
-    padding-top: 20px;
-    text-align: center;
-  }
-
-  .home-menu {
-    width: @menusize;
-  }
-
-  .home-body {
-    width: calc(~"100% - @{menusize} ");
-    height: 100%;
-    padding: 24px;
-
-    .home-body-card {
-      height: 100%;
-    }
-  }
 }
 </style>

@@ -12,12 +12,12 @@
             shape="circle"
             @click="reload(item.name)"
           />
-          <Tag2 class="title-tag" :type="item.status" slot="title" />
-          <a-avatar slot="avatar" :size="48" shape="square" :src="item.avatar" />
+          <Tag2 class="title-tag" :type="item.status" slot="title"/>
+          <a-avatar slot="avatar" :size="48" shape="square" :src="item.avatar"/>
           <span v-if="item.status == 'error'" slot="description">{{item.message}}</span>
           <template v-else slot="description" v-for="({name, value}, index) in item.actions">
             <span :key="name">{{name}} : {{value}}</span>
-            <a-divider :key="index" type="vertical" v-if="index !== item.actions.length-1" />
+            <a-divider :key="index" type="vertical" v-if="index !== item.actions.length-1"/>
           </template>
           <span slot="description"></span>
         </a-list-item-meta>
@@ -307,7 +307,7 @@ export default {
   // border: 1px solid #e8e8e8;
   // border-radius: 4px;
   // overflow: auto;
-  padding: 0px 24px;
+  padding: 8px 24px;
 
   .title-reload {
     margin-left: 20px;

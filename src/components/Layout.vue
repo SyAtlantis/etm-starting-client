@@ -33,7 +33,7 @@ export default {
 
 <style lang="less">
 @head-height: 50px;
-@foot-heioght: 70px;
+@foot-heioght: 40px;
 @icon-width: 60px;
 
 .layout {
@@ -44,7 +44,7 @@ export default {
     height: @head-height;
     display: flex;
     justify-content: space-between;
-    background-color: green;
+    background-color: #dde3e8;
     font-size: 26px;
     align-items: center;
 
@@ -54,7 +54,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: red;
+      // background-color: red;
     }
 
     .head-center {
@@ -63,7 +63,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: blue;
+      // background-color: blue;
     }
 
     .head-right {
@@ -72,18 +72,21 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: red;
+      // background-color: red;
     }
   }
 
   .body {
     height: calc(100% - @head-height - @foot-heioght);
-    background-color: beige;
+    // background-color: beige;
   }
 
   .foot {
     height: @foot-heioght;
-    background-color: cadetblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.65);
   }
 }
 </style>
