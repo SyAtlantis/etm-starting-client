@@ -35,116 +35,7 @@ export default {
   name: "monitor",
   components: { Tag2 },
   data() {
-    return {
-      // listData: [
-      //   {
-      //     title: "网络连接",
-      //     status: this.$store.state.monitor.netInfo.status,
-      //     avatar: require("@/assets/net.png"),
-      //     actions: [
-      //       {
-      //         name: "公网IP",
-      //         value: "127.0.0.1"
-      //       },
-      //       {
-      //         name: "端口",
-      //         value: "4096"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     title: "显卡状态",
-      //     status: "loading",
-      //     avatar: require("@/assets/gpu.png"),
-      //     actions: [
-      //       {
-      //         name: "型号",
-      //         value: "aaaaa"
-      //       },
-      //       {
-      //         name: "支持挖矿",
-      //         value: "是"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     title: "进程状态",
-      //     status: "search",
-      //     avatar: require("@/assets/proc.png"),
-      //     actions: [
-      //       {
-      //         name: "进程目录",
-      //         value: "aa"
-      //       },
-      //       {
-      //         name: "版本",
-      //         value: "bb"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     title: "同步情况",
-      //     status: "error",
-      //     avatar: require("@/assets/sync.png"),
-      //     actions: [
-      //       {
-      //         name: "最新高度",
-      //         value: "12345"
-      //       },
-      //       {
-      //         name: "我的高度",
-      //         value: "12000"
-      //       },
-      //       {
-      //         name: "当前奖励",
-      //         value: "6ETM"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     title: "出块情况",
-      //     status: "normal",
-      //     avatar: require("@/assets/block.png"),
-      //     actions: [
-      //       {
-      //         name: "上一个成功出块时间",
-      //         value: "2019.06.11 11:11"
-      //       },
-      //       {
-      //         name: "成功高度",
-      //         value: "123"
-      //       },
-      //       {
-      //         name: "上一个失败出块时间",
-      //         value: "2019.06.11 11:11"
-      //       },
-      //       {
-      //         name: "失败高度",
-      //         value: "456"
-      //       }
-      //     ]
-      //   }
-      // ]
-      // status: {
-      //   normal: {
-      //     name: "正常",
-      //     color: "#74bd4f"
-      //   },
-      //   error: {
-      //     name: "错误",
-      //     color: "#e56255"
-      //   },
-      //   loading: {
-      //     name: "加载中",
-      //     color: "#f7c443"
-      //   },
-      //   search: {
-      //     name: "查询中",
-      //     color: "#3f91f7"
-      //   }
-      // },
-      // busy: false
-    };
+    return {};
   },
   computed: {
     listData() {
@@ -191,12 +82,8 @@ export default {
           message: this.$store.state.monitor.procInfo.message,
           actions: [
             {
-              name: "进程目录",
-              value: "aa"
-            },
-            {
-              name: "版本",
-              value: "bb"
+              name: "进程状态",
+              value: this.$store.state.monitor.procInfo.data.status
             }
           ]
         },

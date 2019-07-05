@@ -56,6 +56,7 @@ export default new Vuex.Store({
       }
     },
     control: {
+      status: "stopped",
       start: false,
       pause: false,
       boot: false

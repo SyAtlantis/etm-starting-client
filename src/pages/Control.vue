@@ -119,14 +119,17 @@ export default {
       if (this.$store.state.install.pm2Info.status != "installed") {
         return false;
       }
-      this.isStarted();
+
+      this.getStatus();
+      this.isboot();
+
       return true;
     },
     canStart() {
       if (!this.isInstallAll) {
         return false;
       }
-      if (this.$store.state.control.start) {
+      if (this.$store.state.control.start && !this.$store.state.control.pause) {
         return false;
       }
       return true;
@@ -161,12 +164,10 @@ export default {
           }
 
           if (data.success) {
-            console.log(`start success=>${res}`);
+            console.log(`start success=>${data.results}`);
             this.$store.state.control.start = true;
+            this.$store.state.control.pause = false;
           } else {
-            // this.$message.warning(
-            //   `start failure=>${data.message}`
-            // );
             console.log(`start failure=>${data.message}`);
           }
         })
@@ -185,12 +186,9 @@ export default {
           }
 
           if (data.success) {
-            console.log(`pause success=>${res}`);
+            console.log(`pause success=>${data.results}`);
             this.$store.state.control.pause = true;
           } else {
-            // this.$message.warning(
-            //   `pause failure=>${data.message}`
-            // );
             console.log(`pause failure=>${data.message}`);
           }
         })
@@ -209,8 +207,9 @@ export default {
           }
 
           if (data.success) {
-            console.log(`stop success=>${res}`);
+            console.log(`stop success=>${data.results}`);
             this.$store.state.control.start = false;
+            this.$store.state.control.pause = false;
           } else {
             // this.$message.warning(
             //   `stop failure=>${data.message}`
@@ -235,7 +234,7 @@ export default {
             }
 
             if (data.success) {
-              console.log(`set boot success=>${res}`);
+              console.log(`set boot success=>${data.results}`);
               this.$store.state.control.boot = true;
             } else {
               // this.$message.warning(
@@ -258,7 +257,7 @@ export default {
             }
 
             if (data.success) {
-              console.log(`set unboot success=>${res}`);
+              console.log(`set unboot success=>${data.results}`);
               this.$store.state.control.boot = false;
             } else {
               // this.$message.warning(
@@ -273,9 +272,9 @@ export default {
           });
       }
     },
-    isStarted() {
+    isboot() {
       control
-        .isStarted()
+        .isboot()
         .then(res => {
           let { data } = res;
           if (!data || res.status !== 200) {
@@ -283,18 +282,52 @@ export default {
           }
 
           if (data.success) {
-            console.log(`get isStarted success=>${res}`);
-            this.$store.state.control.start = data.results;
+            console.log(`get isboot success=>${data.results}`);
+            this.$store.state.control.boot = data.results;
           } else {
             // this.$message.warning(
-            //   `get isStarted failure=>${data.message}`
+            //   `get isboot failure=>${data.message}`
             // );
-            console.log(`get isStarted failure=>${data.message}`);
+            console.log(`get isboot failure=>${data.message}`);
           }
         })
         .catch(err => {
-          // this.$message.error(`get isStarted error=>${err}`);
-          console.log(`get isStarted error=>${err}`);
+          // this.$message.error(`get isboot error=>${err}`);
+          console.log(`get isboot error=>${err}`);
+        });
+    },
+    getStatus() {
+      control
+        .getStatus()
+        .then(res => {
+          let { data } = res;
+          if (!data || res.status !== 200) {
+            throw new Error("Result data or status error!");
+          }
+
+          if (data.success) {
+            console.log(`get status success=>${data.results}`);
+            this.$store.state.control.status = data.results;
+
+            if (data.results === "online") {
+              this.$store.state.control.start = true;
+            } else if (data.results === "stopped") {
+              this.$store.state.control.start = true;
+              this.$store.state.control.pause = true;
+            } else if (data.results === "error") {
+              this.$store.state.control.start = false;
+              this.$store.state.control.pause = false;
+            }
+          } else {
+            // this.$message.warning(
+            //   `get status failure=>${data.message}`
+            // );
+            console.log(`get status failure=>${data.message}`);
+          }
+        })
+        .catch(err => {
+          // this.$message.error(`get status error=>${err}`);
+          console.log(`get status error=>${err}`);
         });
     }
   }
@@ -309,15 +342,6 @@ export default {
   // border-radius: 4px;
   overflow: auto;
   padding: 8px 24px;
-
-  // .head-icon {
-  //   font-size: 30px;
-  // }
-
-  // .head {
-  //   display: flex;
-  //   justify-content: space-between;
-  // }
 
   .env-title {
     padding: 10px;

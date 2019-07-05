@@ -67,7 +67,6 @@
 </template>
 
 <script>
-// import SettingContent from "../components/SettingContent";
 import { setting } from "../modules";
 
 export default {
@@ -76,9 +75,6 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      // publicIp: this.$store.state.setting.publicIp,
-      // port: this.$store.state.setting.port,
-      // secret: this.$store.state.setting.secret,
       spinning: false
     };
   },
@@ -116,11 +112,6 @@ export default {
     save(data) {
       this.spinning = true;
 
-      // let data = {
-      //   publicIp: this.publicIp,
-      //   port: this.port,
-      //   secret: this.secret
-      // };
       setting
         .setVulue(data)
         .then(res => {

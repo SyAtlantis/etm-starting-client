@@ -1,27 +1,27 @@
 <template>
   <div class="queryinfo">
     <a-spin class="queryinfo-spin" :spinning="spinning">
-      <a-icon slot="indicator" type="loading" style="font-size: 24px" spin/>
+      <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
       <div v-if="status =='installed'">
-        <Tag1 type="installed"/>
+        <Tag1 type="installed" />
         <span>版本：{{version}}</span>
       </div>
       <div v-else-if="status =='uninstalled'">
-        <Tag1 type="uninstalled"/>
+        <Tag1 type="uninstalled" />
         <a-button type="primary" ghost size="small" @click="install">安装</a-button>
       </div>
       <div v-else-if="status =='installing'">
-        <Tag1 type="installing"/>
+        <Tag1 type="installing" />
       </div>
       <div v-else-if="status =='installfail'">
-        <Tag1 type="installfail"/>
+        <Tag1 type="installfail" />
         <a-button type="primary" ghost size="small" @click="install">重新安装</a-button>
       </div>
       <div v-else-if="status =='checking'">
-        <Tag1 type="checking"/>
+        <Tag1 type="checking" />
       </div>
       <div v-else>
-        <Tag1 type="checkfail"/>
+        <Tag1 type="checkfail" />
         <a-button type="primary" ghost size="small" @click="check">重新检测</a-button>
       </div>
     </a-spin>
@@ -116,7 +116,7 @@ export default {
           }
 
           if (data.success) {
-            console.log(`install ${this.name} success=>${res}`);
+            console.log(`install ${this.name} success=>${data.results}`);
             this.spinning = false;
             this.status = "installed";
             this.check();
