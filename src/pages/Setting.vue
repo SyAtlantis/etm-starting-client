@@ -55,6 +55,26 @@
             ]"
           />
         </a-form-item>
+        <a-form-item label="种子节点" :labelCol="{span: 4}" :wrapperCol="{span: 18}">
+          <a-textarea
+            :rows="4"
+            placeholder="请输入Peers, 如:{'ip':'123.456.78.90','port':'4096'}"
+            v-decorator="[
+          'peers',
+          {
+          rules: [{
+          type: 'string', message: 'The input is not valid peers',
+          }, ,{
+          validator: checkSecret
+          }],
+          initialValue: this.$store.state.setting.peers,
+          }
+          ]"
+          />
+        </a-form-item>
+        <a-form-item label="注意" :labelCol="{span: 4}" :wrapperCol="{span: 18}" required>
+          <span>保存后需要重新启动项目才能生效！！！</span>
+        </a-form-item>
         <a-form-item :labelCol="{span: 4}" :wrapperCol="{span: 18, offset: 4}">
           <div class="setting-button">
             <a-button type="primary" html-type="submit">保存</a-button>
@@ -120,6 +140,7 @@ export default {
           this.$store.state.setting.publicIp = data.publicIp;
           this.$store.state.setting.port = data.port;
           this.$store.state.setting.secret = data.secret;
+          this.$store.state.setting.peers = data.peers;
         })
         .catch(err => {
           console.log(err);
@@ -130,7 +151,8 @@ export default {
       this.form.setFieldsValue({
         publicIp: this.$store.state.setting.publicIp,
         port: this.$store.state.setting.port,
-        secret: this.$store.state.setting.secret
+        secret: this.$store.state.setting.secret,
+        peers: this.$store.state.setting.peers
       });
     },
     getIp() {
@@ -161,6 +183,9 @@ export default {
       // if (!value) {
       //   return cb("The input is not valid secret!");
       // }
+      cb();
+    },
+    checkPeers(rule, value, cb) {
       cb();
     }
   }

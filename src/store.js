@@ -23,7 +23,8 @@ export default new Vuex.Store({
     setting: {
       ip: "",
       port: "4096",
-      secret: ""
+      secret: "",
+      peers: ""
     },
     monitor: {
       netInfo: {
